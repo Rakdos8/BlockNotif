@@ -1,0 +1,54 @@
+# Here, you can customize messages for your language.
+# Commented lines "#" will use default messages. 
+
+#MESSAGE_DESTROY: "&f<time>: &5<player> &9destroyed &5<block> &9in &5<world>&9,&5<posx>&9,&5<posy>&9,&5<posz>"
+#MESSAGE_PLACE: "&f<time>: &5<player> &9placed &5<block> &9in &5<world>&9,&5<posx>&9,&5<posy>&9,&5<posz>"
+#MESSAGE_IGNITE: "&f<time>: &5<player> &9ignited &5<block> &9in &5<world>&9,&5<posx>&9,&5<posy>&9,&5<posz>"
+#MESSAGE_USEBUCKET: "&f<time>: &5<player> &9used &5<block> &9in &5<world>&9,&5<posx>&9,&5<posy>&9,&5<posz>"
+#MESSAGE_TNTEXPLODE: "&f<time>: &5BOOM! &9created by &5<player> &9in &5<world>&9,&5<posx>&9,&5<posy>&9,&5<posz>"
+#MESSAGE_ENTITYKILL: "&f<time>: &5<player> &9killed &5<block> &9in &5<world>&9,&5<posx>&9,&5<posy>&9,&5<posz>"
+#MESSAGE_BEFORE: "&9 (and &5<nb> &9before)"
+#MESSAGE_RELOAD: "Configuration reloaded!"
+#MESSAGE_SPECIFYPLAYER: "You must specify a player!"
+#MESSAGE_NOACTIVITY: "No activity found for this player!"
+#MESSAGE_NOPERMISSION: "Sorry, you do not have the permission!"
+
+# FRENCH
+# Pour avoir les messages en français, enlevez les «#» au début des lignes.
+#MESSAGE_DESTROY: "&f<time>: &5<player> &9a détruit &5<block> &9à &5<world>&9,&5<posx>&9,&5<posy>&9,&5<posz>"
+#MESSAGE_PLACE: "&f<time>: &5<player> &9a placé &5<block> &9à &5<world>&9,&5<posx>&9,&5<posy>&9,&5<posz>"
+#MESSAGE_IGNITE: "&f<time>: &5<player> &9a allumé &5<block> &9à &5<world>&9,&5<posx>&9,&5<posy>&9,&5<posz>"
+#MESSAGE_USEBUCKET: "&f<time>: &5<player> &9a versé &5<block> &9à &5<world>&9,&5<posx>&9,&5<posy>&9,&5<posz>"
+#MESSAGE_TNTEXPLODE: "&f<time>: &5BOUM! &9créé par &5<player> &9à &5<world>&9,&5<posx>&9,&5<posy>&9,&5<posz>"
+#MESSAGE_ENTITYKILL: "&f<time>: &5<player> &9a tué &5<block> &9à &5<world>&9,&5<posx>&9,&5<posy>&9,&5<posz>"
+#MESSAGE_BEFORE: "&9 (et &5<nb> &9avant)"
+#MESSAGE_RELOAD: "Configuration rechargée!"
+#MESSAGE_SPECIFYPLAYER: "Vous devez préciser un joueur!"
+#MESSAGE_NOACTIVITY: "Pas d'activité trouvée pour ce joueur!"
+#MESSAGE_NOPERMISSION: "Désolé, vous n'avez pas la permission!"
+
+# 简体中文 Chinese - Simplified
+#MESSAGE_DESTROY: "&f<time>: &5<player> &9破坏 &5<block> &9在 &5<world>&9,&5<posx>&9,&5<posy>&9,&5<posz>"
+#MESSAGE_PLACE: "&f<time>: &5<player> &9放置 &5<block> &9在 &5<world>&9,&5<posx>&9,&5<posy>&9,&5<posz>"
+#MESSAGE_IGNITE: "&f<time>: &5<player> &9点燃 &5<block> &9在 &5<world>&9,&5<posx>&9,&5<posy>&9,&5<posz>"
+#MESSAGE_USEBUCKET: "&f<time>: &5<player> &9使用 &5<block> &9在 &5<world>&9,&5<posx>&9,&5<posy>&9,&5<posz>"
+#MESSAGE_TNTEXPLODE: "&f<time>: &5爆炸! &9制造者: &5<player> &9在 &5<world>&9,&5<posx>&9,&5<posy>&9,&5<posz>"
+#MESSAGE_ENTITYKILL: "&f<time>: &5<player> &9杀死 &5<block> &9在 &5<world>&9,&5<posx>&9,&5<posy>&9,&5<posz>"
+#MESSAGE_BEFORE: "&9 (已经 &5<nb> &9次)"
+#MESSAGE_RELOAD: "配置文档重新载入!"
+#MESSAGE_SPECIFYPLAYER: "您必须输入正确的玩家名称"
+#MESSAGE_NOACTIVITY: "没有找到该玩家的记录!" 
+#MESSAGE_NOPERMISSION: "抱歉, 你没有此权限!"
+
+# 繁体中文 Chinese - Traditional
+#MESSAGE_DESTROY: "&f<time>: &5<player> &9破壞&5<block> &9在&5<world>&9,&5<posx>&9,&5<posy>&9,&5<posz>"
+#MESSAGE_PLACE: "&f<time>: &5<player> &9放置&5<block> &9在&5<world>&9,&5<posx>&9,&5<posy>&9,&5<posz>"
+#MESSAGE_IGNITE: "&f<time>: &5<player> &9點燃&5<block> &9在&5<world>&9,&5<posx>&9,&5<posy>&9,&5<posz>"
+#MESSAGE_USEBUCKET: "&f<time>: &5<player> &9使用&5<block> &9在&5<world>&9,&5<posx>&9,&5<posy>&9,&5<posz>"
+#MESSAGE_TNTEXPLODE: "&f<time>: &5爆炸! &9製造者: &5<player> &9在&5<world>&9,&5<posx>&9,&5<posy>&9,&5<posz>"
+#MESSAGE_ENTITYKILL: "&f<time>: &5<player> &9殺死&5<block> &9在&5<world>&9,&5<posx>&9,&5<posy>&9,&5<posz>"
+#MESSAGE_BEFORE: "&9 (已經 &5<nb> &9次)"
+#MESSAGE_RELOAD: "配置文檔重新載入!"
+#MESSAGE_SPECIFYPLAYER: "您必須輸入正確的玩家名稱"
+#MESSAGE_NOACTIVITY: "沒有找到該玩家的記錄!"
+#MESSAGE_NOPERMISSION: "抱歉, 你沒有此權限!"

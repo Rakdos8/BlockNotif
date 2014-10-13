@@ -1,0 +1,31 @@
+name: BlockNotif
+main: me.tabinol.blocknotif.BlockNotif
+version: ${project.version}
+commands:
+    blocknotif:
+        description: Show player interact history
+        aliases: bn
+        usage: /<command> <player> [page]
+        permission: blocknotif.history
+        permission-message: You don't have <permission>
+    blocknotifreload:
+        description: Reload configuration
+        aliases: bnreload
+        permission: blocknotif.reload
+        permission-message: You don't have <permission>
+permissions:
+    blocknotif.notify:
+        description: Notify users from block actions
+        default: op
+    blocknotif.history:
+        description: Allow the user to see the history
+        default: op
+    blocknotif.ignore:
+        description: Do not listen any action from this user
+        default: op
+    blocknotif.allowall:
+        description: Allow the user to do all prevented actions
+        default: op
+    blocknotif.reload:
+        description: Allow to reload de configuration
+        default: op

@@ -1,0 +1,99 @@
+# BlockNotif configuration file
+
+# Do you want a log file in BlockNotif directory?
+LogFile: false
+
+# List here for which block you want to be notified
+# You can use ['*'] for ALL blocks (Recommended only for BlockIgnite)
+# For an empty list, put [] and remove any "- XX", example: "BlockBreak: []"
+# You can use XX or 'XX:XX' (with ')
+# (see http://www.minecraftwiki.net/wiki/Data_values)
+# Or use the "Bukkit name"
+# blocks: http://jd.bukkit.org/rb/apidocs/org/bukkit/Material.html
+# entities: http://www.minecraftwiki.net/wiki/Data_values#Entity_IDs
+# Skull: You can type 'SKULL:Name', example : 'SKULL:Creeper' or 'SKULL:Player'
+# Example: BlockBreak: ['17:3', 21, DIAMOND_ORE]
+ActionListen:
+
+    # When a user removes/takes/mines a block
+    # Ignore permission: blocknotif.ignore.break.<number>[:<data>]
+    BlockBreak: [DIAMOND_ORE, EMERALD_ORE, GOLD_ORE]
+
+    # When a user places a block
+    # Ignore permission: blocknotif.ignore.place.<number>[:<data>]
+    BlockPlace: [TNT]
+    
+    # When a user puts fire
+    # Ignore permission: blocknotif.ignore.ignite.<number>[:<data>]
+    BlockIgnite: ['*']
+    
+    # When a user uses bucket (326=water and/or 327=lava)
+    # Ignore permission: blocknotif.ignore.bucket.<number>
+    BucketUse: [LAVA_BUCKET, WATER_BUCKET]
+    
+    # When a player kills an entity (villager, animal, monster, etc.)
+    # Ignore permission: blocknotif.ignore.kill.<number>
+    EntityKill: [VILLAGER, VILLAGERGOLEM, ENTITYHORSE]
+    
+    # Show also the Cuboid/Land name (Show regions, residences, ...)?
+    # "Flags" must be installed and a compatible land protection plugin
+    ShowCuboidName: true
+    
+    # Notification from action in creative mode?
+    Creative: true
+    
+    # Notification when TNT explode?
+    TntExplode: true
+    
+# Here add blocks you want to prevent
+# Users will not be allowed to do those actions
+ActionPrevent:
+    
+    # When a user removes/takes/mines a block
+    # Allow permission: blocknotif.allow.break.<number>[:<data>]
+    BlockBreak: []
+    
+    # When a user places a block
+    # Allow permission: blocknotif.allow.place.<number>[:<data>]
+    BlockPlace: []
+    
+    # When a user puts fire
+    # Note: Put "49" to prevent Nether portal creation
+    # Allow permission: blocknotif.allow.ignite.<number>[:<data>]
+    BlockIgnite: []
+    
+    # When a user uses bucket (326=water and/or 327=lava)
+    # Allow permission: blocknotif.allow.bucket.<number>
+    BucketUse: []
+    
+    # When a player kills an entity (villager, animal, monster, etc.)
+    # Allow permission: blocknotif.allow.kill.<number>
+    EntityKill: []
+
+# You can customize colors for each items and entities
+# Use "&c" format
+#Color:
+#    Block:
+#        14: "&6"
+#        21: "&1"
+#        56: "&b"
+#        129: "&a"
+#    Entity:
+#        99: "&e"
+#        120: "&f"
+
+# History keep
+# Default configuration here should works for most servers
+History:
+    
+    # Time between the first action and the notification in second (antispam)
+    # In this time, next actions will be added in history
+    # Lower = more chat posts, higher = more delays before notification
+    TimeBeforeNotify: 30
+    
+    # Maximum time in second the history is keep in memory
+    # Also the time between each clean up
+    MaxTimeKeep: 7200
+    
+    # Maximum number of total entry keep in memory
+    MaxEntryKeep: 300
