@@ -20,6 +20,7 @@ package me.tabinol.blocknotif;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
 import java.util.logging.Level;
 import me.tabinol.blocknotif.blockactions.ActionCleanUp;
@@ -54,6 +55,7 @@ import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.mcstats.MetricsLite;
 
 public class BlockNotif extends JavaPlugin implements Listener {
 
@@ -97,7 +99,7 @@ public class BlockNotif extends JavaPlugin implements Listener {
 
         //For mcstats source : https://github.com/Hidendra/Plugin-Metrics/wiki/Usage
         try {
-            Metrics metrics = new Metrics(this);
+            MetricsLite metrics = new MetricsLite(this);
             metrics.start();
         } catch (IOException e) {
             // Failed to submit the stats :-(
@@ -299,15 +301,15 @@ public class BlockNotif extends JavaPlugin implements Listener {
         //A user ignites a block
         BlockData bd;
         if (event.getCause() == IgniteCause.FLINT_AND_STEEL
-                && blockIgniteList.contains(bd = new BlockData(event.getPlayer().getTargetBlock(null, 10)))
+                && blockIgniteList.contains(bd = new BlockData(event.getPlayer().getTargetBlock((HashSet<Byte>) null, 10)))
                 && event.getPlayer() != null
-                && !(event.getPlayer().hasPermission("blocknotif.ignore.ignite." + event.getPlayer().getTargetBlock(null, 10).getTypeId())
+                && !(event.getPlayer().hasPermission("blocknotif.ignore.ignite." + event.getPlayer().getTargetBlock((HashSet<Byte>) null, 10).getTypeId())
                 || event.getPlayer().hasPermission("blocknotif.ignore.ignite." + bd.toString())
                 || event.getPlayer().hasPermission("blocknotif.ignore.ignite.*"))) {
 
             blockActionList.addAction(Calendar.getInstance(), event.getPlayer(),
                     MessagesTxt.IGNITE,
-                    event.getPlayer().getTargetBlock(null, 10).getLocation(), bd);
+                    event.getPlayer().getTargetBlock((HashSet<Byte>) null, 10).getLocation(), bd);
         }
     }
 
@@ -390,8 +392,8 @@ public class BlockNotif extends JavaPlugin implements Listener {
         //A user ignites a block
         BlockData bd;
         if (event.getCause() == IgniteCause.FLINT_AND_STEEL
-                && blockIgnitePreventList.contains(bd = new BlockData(event.getPlayer().getTargetBlock(null, 10)))
-                && !(event.getPlayer().hasPermission("blocknotif.allow.ignite." + event.getPlayer().getTargetBlock(null, 10).getTypeId())
+                && blockIgnitePreventList.contains(bd = new BlockData(event.getPlayer().getTargetBlock((HashSet<Byte>) null, 10)))
+                && !(event.getPlayer().hasPermission("blocknotif.allow.ignite." + event.getPlayer().getTargetBlock((HashSet<Byte>) null, 10).getTypeId())
                 || event.getPlayer().hasPermission("blocknotif.allow.ignite." + bd.toString())
                 || event.getPlayer().hasPermission("blocknotif.allow.ignite.*")
                 || event.getPlayer().hasPermission("blocknotif.allowall"))) {
@@ -458,7 +460,7 @@ public class BlockNotif extends JavaPlugin implements Listener {
                 if (slot < maxInv) {
 
                     Player player = (Player) event.getWhoClicked();
-                    Block bl = player.getTargetBlock(null, 10);
+                    Block bl = player.getTargetBlock((HashSet<Byte>) null, 10);
                     ItemStack item = event.getNewItems().get(slot);
                     if (itemCheck(player, bl.getLocation(), new BlockData(item.getType()))) {
                         event.setCancelled(true);
@@ -483,7 +485,7 @@ public class BlockNotif extends JavaPlugin implements Listener {
                 || (event.getRawSlot() >= maxInv && event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY))) {
 
             Player player = (Player) event.getWhoClicked();
-            Block bl = player.getTargetBlock(null, 10);
+            Block bl = player.getTargetBlock((HashSet<Byte>) null, 10);
             ItemStack item;
 
             if (event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY) {

@@ -1,6 +1,7 @@
 name: BlockNotif
 main: me.tabinol.blocknotif.BlockNotif
 version: ${project.version}
+softdepend: [Secuboid]
 commands:
     blocknotif:
         description: Show player interact history

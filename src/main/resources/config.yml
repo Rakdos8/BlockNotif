@@ -35,8 +35,7 @@ ActionListen:
     # Ignore permission: blocknotif.ignore.kill.<number>
     EntityKill: [VILLAGER, VILLAGERGOLEM, ENTITYHORSE]
     
-    # Show also the Cuboid/Land name (Show regions, residences, ...)?
-    # "Flags" must be installed and a compatible land protection plugin
+    # Show also the Land name (require Secuboid)?
     ShowCuboidName: true
     
     # Notification from action in creative mode?

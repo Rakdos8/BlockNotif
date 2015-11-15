@@ -18,21 +18,18 @@
 // Access the Name of the Land (Flags Plugin)
 package me.tabinol.blocknotif;
 
-import io.github.alshain01.flags.api.FlagsAPI;
-import io.github.alshain01.flags.api.area.Area;
-import io.github.alshain01.flags.api.area.Area.AreaRelationship;
+import me.tabinol.secuboidapi.ApiSecuboidSta;
+import me.tabinol.secuboidapi.lands.ApiLand;
 import org.bukkit.Location;
 
 public class LandAccess {
 
     public String getLandName(Location location) {
 
-        Area area = FlagsAPI.getAbsoluteAreaAt(location);
+        ApiLand land = ApiSecuboidSta.getLands().getLand(location);
 
-        if (area != null
-                && area.getRelationship(FlagsAPI.getWildernessArea(location.getWorld())) != AreaRelationship.EQUAL) {
-            
-            return area.getName();
+        if (land != null) {
+            return land.getName();
         } else {
             return null;
         }
