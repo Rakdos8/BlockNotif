@@ -55,7 +55,6 @@ import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.mcstats.MetricsLite;
 
 public class BlockNotif extends JavaPlugin implements Listener {
 
@@ -96,15 +95,6 @@ public class BlockNotif extends JavaPlugin implements Listener {
         messagesTxt = new MessagesTxt();
         loadBlockNotifConfig();
         new ActionCleanUp().scheduleAction();
-
-        //For mcstats source : https://github.com/Hidendra/Plugin-Metrics/wiki/Usage
-        try {
-            MetricsLite metrics = new MetricsLite(this);
-            metrics.start();
-        } catch (IOException e) {
-            // Failed to submit the stats :-(
-        }
-
     }
 
     public static BlockNotif getThisPlugin() {
