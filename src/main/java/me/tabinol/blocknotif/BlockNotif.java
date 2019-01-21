@@ -76,7 +76,6 @@ public class BlockNotif extends JavaPlugin implements Listener {
     private TreeSetAll<BlockData> bucketUsePreventList;
     private TreeSetAll<BlockData> entityKillPreventList;
     private boolean watchTntExplode;
-    public LandAccess landAccess = null;
     private static BlockNotif thisPlugin;
     // for config
     public static int History_TimeBeforeNotify;
@@ -133,7 +132,6 @@ public class BlockNotif extends JavaPlugin implements Listener {
 
             if (getServer().getPluginManager().getPlugin("Flags") != null) {
 
-                landAccess = new LandAccess();
                 this.getLogger().log(Level.INFO, "Flags Detected");
 
             } else {

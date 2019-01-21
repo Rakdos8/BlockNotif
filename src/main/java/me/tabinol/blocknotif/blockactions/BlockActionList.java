@@ -59,29 +59,6 @@ public class BlockActionList extends LinkedList<BlockEntry> {
             } else {
                 playerName = player.getName();
             }
-
-            // Detect cuboid
-            if (blockNotif.landAccess != null) {
-                cuboid = blockNotif.landAccess.getLandName(location);
-            } else {
-                cuboid = null;
-            }
-
-            // Add entry and Notify
-            BlockEntry blockEntry = new BlockEntry(calendar, playerName,
-                    action, cuboid, location, blockData);
-            // Anti duplication
-            if (this.isEmpty() || !blockEntry.equals(this.getLast())) {
-                addLast(blockEntry);
-                blockNotif.logTask.writeLog(blockEntry.getMessage().replaceAll("§.", ""));
-                // Check if Entry exist, if not, add it
-                String actionInList = blockEntry.toActionInList();
-                if (!blockNotif.inActionList.contains(actionInList)) {
-                    new NotifyActionTask(this, calendar, actionInList).runTaskLater(blockNotif,
-                            20 * BlockNotif.History_TimeBeforeNotify);
-
-                }
-            }
         }
     }
 }
