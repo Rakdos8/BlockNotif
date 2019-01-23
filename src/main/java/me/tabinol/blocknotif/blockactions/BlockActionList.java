@@ -47,18 +47,35 @@ public class BlockActionList extends LinkedList<BlockEntry> {
             Location location, BlockData blockData) {
 
         String playerName;
-        String cuboid;
         
         // Verify permissions and GameMode
-        if (action == MessagesTxt.TNTEXPLODE || (!player.hasPermission("blocknotif.ignore")
+        if (true/*action == MessagesTxt.TNTEXPLODE || (!player.hasPermission("blocknotif.ignore")
                 && ((player.getGameMode() == GameMode.CREATIVE
                 && BlockNotif.ActionListen_Creative
-                || !(player.getGameMode() == GameMode.CREATIVE))))) {
+                || !(player.getGameMode() == GameMode.CREATIVE))))*/) {
             if (player == null) {
                 playerName = "UNKNOWN";
             } else {
                 playerName = player.getName();
             }
+            
+            // Add entry and Notify
+            BlockEntry blockEntry = new BlockEntry(calendar, playerName,
+                    action, null, location, blockData);
+            // Anti duplication
+            if (this.isEmpty() || !blockEntry.equals(this.getLast())) {
+                addLast(blockEntry);
+                blockNotif.logTask.writeLog(blockEntry.getMessage().replaceAll("§.", ""));
+                // Check if Entry exist, if not, add it
+                String actionInList = blockEntry.toActionInList();
+                if (!blockNotif.inActionList.contains(actionInList)) {
+                    new NotifyActionTask(this, calendar, actionInList).runTaskLater(blockNotif,
+                            20 * BlockNotif.History_TimeBeforeNotify);
+
+                }
+            }
+            
         }
+        
     }
 }

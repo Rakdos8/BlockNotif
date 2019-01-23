@@ -17,7 +17,6 @@
  */
 package me.tabinol.blocknotif;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
@@ -210,9 +209,9 @@ public class BlockNotif extends JavaPlugin implements Listener {
         BlockData bd;
 
         if (blockBreakList.contains(bd = new BlockData(event.getBlock()))
-                && !(event.getPlayer().hasPermission("blocknotif.ignore.break." + event.getBlock().getTypeId())
+                /*&& !(event.getPlayer().hasPermission("blocknotif.ignore.break." + event.getBlock().getType())
                 || event.getPlayer().hasPermission("blocknotif.ignore.break." + bd.toString())
-                || event.getPlayer().hasPermission("blocknotif.ignore.break.*"))) {
+                || event.getPlayer().hasPermission("blocknotif.ignore.break.*"))*/) {
 
             blockActionList.addAction(Calendar.getInstance(), event.getPlayer(),
                     MessagesTxt.DESTROY, event.getBlock().getLocation(), bd);
@@ -225,17 +224,17 @@ public class BlockNotif extends JavaPlugin implements Listener {
         // A user places a block
         BlockData bd;
 
-        if (event.getBlock().getType() == Material.SKULL) {
+        if (event.getBlock().getType().equals(Material.PLAYER_HEAD)) {
 
             // If it is skull, delay task (to resolve a bug)
             new DelayBlockPlace(Calendar.getInstance(), event.getPlayer(),
                     MessagesTxt.PLACE, event.getBlock().getLocation());
 
         } else {
-            if (blockPlaceList.contains(bd = new BlockData(event.getBlock()))
-                    && !(event.getPlayer().hasPermission("blocknotif.ignore.place." + event.getBlock().getTypeId())
-                    || event.getPlayer().hasPermission("blocknotif.ignore.place." + bd.toString())
-                    || event.getPlayer().hasPermission("blocknotif.ignore.place.*"))) {
+            if (blockPlaceList.contains(bd = new BlockData(event.getBlock().getType()))
+                    /*&& !(event.getPlayer().hasPermission("blocknotif.ignore.place." + event.getBlock().getType())
+                    ||event.getPlayer().hasPermission("blocknotif.ignore.place." + bd.toString())
+                    || event.getPlayer().hasPermission("blocknotif.ignore.place.*"))*/) {
 
                 blockActionList.addAction(Calendar.getInstance(), event.getPlayer(),
                         MessagesTxt.PLACE, event.getBlock().getLocation(), bd);
@@ -243,7 +242,7 @@ public class BlockNotif extends JavaPlugin implements Listener {
         }
 
         // A user places TNT for TNT list
-        if (watchTntExplode && event.getBlock().getTypeId() == 46) {
+        if (watchTntExplode && event.getBlock().getType().equals(Material.TNT)) {
 
             tntList.addAction(Calendar.getInstance(), event.getPlayer(),
                     event.getBlock().getLocation());
@@ -274,9 +273,9 @@ public class BlockNotif extends JavaPlugin implements Listener {
             BlockData bd;
 
             if (blockPlaceList.contains(bd = new BlockData(location.getBlock()))
-                    && !(player.hasPermission("blocknotif.ignore.place." + bd.getItemID())
+                    /*&& !(player.hasPermission("blocknotif.ignore.place." + bd.getItemID())
                     || player.hasPermission("blocknotif.ignore.place." + bd.toString())
-                    || player.hasPermission("blocknotif.ignore.place.*"))) {
+                    || player.hasPermission("blocknotif.ignore.place.*"))*/) {
 
                 BlockNotif.getBlockActionList().addAction(calendar, player, action, location, bd);
             }
@@ -289,23 +288,23 @@ public class BlockNotif extends JavaPlugin implements Listener {
         //A user ignites a block
         BlockData bd;
         if (event.getCause() == IgniteCause.FLINT_AND_STEEL
-                && blockIgniteList.contains(bd = new BlockData(event.getPlayer().getTargetBlock((HashSet<Byte>) null, 10)))
+                && blockIgniteList.contains(bd = new BlockData(event.getPlayer().getTargetBlock(null, 10)))
                 && event.getPlayer() != null
-                && !(event.getPlayer().hasPermission("blocknotif.ignore.ignite." + event.getPlayer().getTargetBlock((HashSet<Byte>) null, 10).getTypeId())
+                /*&& !(event.getPlayer().hasPermission("blocknotif.ignore.ignite." + event.getPlayer().getTargetBlock((HashSet<Byte>) null, 10).getTypeId())
                 || event.getPlayer().hasPermission("blocknotif.ignore.ignite." + bd.toString())
-                || event.getPlayer().hasPermission("blocknotif.ignore.ignite.*"))) {
+                || event.getPlayer().hasPermission("blocknotif.ignore.ignite.*"))*/) {
 
             blockActionList.addAction(Calendar.getInstance(), event.getPlayer(),
                     MessagesTxt.IGNITE,
-                    event.getPlayer().getTargetBlock((HashSet<Byte>) null, 10).getLocation(), bd);
+                    event.getPlayer().getTargetBlock(null, 10).getLocation(), bd);
         }
     }
-
+/*
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event) {
 
         // a user empty a bucket
-        if (bucketUseList.contains(new BlockData(BlockDataType.BLOCK, event.getBucket().getId()))
+        if (bucketUseList.contains(new BlockData(BlockDataType.BLOCK, event.getBucket()))
                 && !(event.getPlayer().hasPermission("blocknotif.ignore.bucket." + event.getBucket().getId())
                 || event.getPlayer().hasPermission("blocknotif.ignore.bucket.*"))) {
 
@@ -314,13 +313,14 @@ public class BlockNotif extends JavaPlugin implements Listener {
                     new BlockData(event.getBucket()));
         }
     }
+*/
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEntityExplodeEvent(EntityExplodeEvent event) {
 
         // TNT explode
         if (watchTntExplode && event.getEntity() != null
-                && (event.getEntityType().getTypeId() == 20 || event.getEntityType().getTypeId() == 45)) {
+                && (event.getEntityType().equals(EntityType.PRIMED_TNT) || event.getEntityType().equals(EntityType.MINECART_TNT))) {
 
             blockActionList.addAction(Calendar.getInstance(), tntList.getPlayer(event.getEntity().getLocation()),
                     MessagesTxt.TNTEXPLODE, event.getEntity().getLocation(), new BlockData(Material.TNT));
@@ -333,8 +333,8 @@ public class BlockNotif extends JavaPlugin implements Listener {
 
         // A user kill an entity
         if (event.getEntity().getKiller() != null && entityKillList.contains(new BlockData(event.getEntityType()))
-                && !(event.getEntity().getKiller().hasPermission("blocknotif.ignore.kill." + event.getEntityType().getTypeId())
-                || event.getEntity().getKiller().hasPermission("blocknotif.ignore.kill.*"))) {
+                /*&& !(event.getEntity().getKiller().hasPermission("blocknotif.ignore.kill." + event.getEntityType().getTypeId())
+                || event.getEntity().getKiller().hasPermission("blocknotif.ignore.kill.*"))*/) {
             blockActionList.addAction(Calendar.getInstance(), event.getEntity().getKiller(),
                     MessagesTxt.ENTITYKILL, event.getEntity().getLocation(),
                     new BlockData(event.getEntityType()));
@@ -348,10 +348,10 @@ public class BlockNotif extends JavaPlugin implements Listener {
         // A user breaks a block
         BlockData bd;
         if (blockBreakPreventList.contains(bd = new BlockData(event.getBlock()))
-                && !(event.getPlayer().hasPermission("blocknotif.allow.break." + event.getBlock().getTypeId())
+                /*&& !(event.getPlayer().hasPermission("blocknotif.allow.break." + event.getBlock().getTypeId())
                 || event.getPlayer().hasPermission("blocknotif.allow.break." + bd.toString())
                 || event.getPlayer().hasPermission("blocknotif.allow.break.*")
-                || event.getPlayer().hasPermission("blocknotif.allowall"))) {
+                || event.getPlayer().hasPermission("blocknotif.allowall"))*/) {
 
             event.setCancelled(true);
             event.getPlayer().sendMessage(messagesTxt.getMessage(MessagesTxt.MESSAGE_NOPERMISSION, null, null));
@@ -364,10 +364,10 @@ public class BlockNotif extends JavaPlugin implements Listener {
         // A user places a block
         BlockData bd;
         if (blockPlacePreventList.contains(bd = new BlockData(event.getBlock()))
-                && !(event.getPlayer().hasPermission("blocknotif.allow.place." + event.getBlock().getTypeId())
+                /*&& !(event.getPlayer().hasPermission("blocknotif.allow.place." + event.getBlock().getTypeId())
                 || event.getPlayer().hasPermission("blocknotif.allow.place." + bd.toString())
                 || event.getPlayer().hasPermission("blocknotif.allow.place.*")
-                || event.getPlayer().hasPermission("blocknotif.allowall"))) {
+                || event.getPlayer().hasPermission("blocknotif.allowall"))*/) {
 
             event.setCancelled(true);
             event.getPlayer().sendMessage(messagesTxt.getMessage(MessagesTxt.MESSAGE_NOPERMISSION, null, null));
@@ -380,11 +380,11 @@ public class BlockNotif extends JavaPlugin implements Listener {
         //A user ignites a block
         BlockData bd;
         if (event.getCause() == IgniteCause.FLINT_AND_STEEL
-                && blockIgnitePreventList.contains(bd = new BlockData(event.getPlayer().getTargetBlock((HashSet<Byte>) null, 10)))
-                && !(event.getPlayer().hasPermission("blocknotif.allow.ignite." + event.getPlayer().getTargetBlock((HashSet<Byte>) null, 10).getTypeId())
+                && blockIgnitePreventList.contains(bd = new BlockData(event.getPlayer().getTargetBlock(null, 10)))
+                /*&& !(event.getPlayer().hasPermission("blocknotif.allow.ignite." + event.getPlayer().getTargetBlock((HashSet<Byte>) null, 10).getTypeId())
                 || event.getPlayer().hasPermission("blocknotif.allow.ignite." + bd.toString())
                 || event.getPlayer().hasPermission("blocknotif.allow.ignite.*")
-                || event.getPlayer().hasPermission("blocknotif.allowall"))) {
+                || event.getPlayer().hasPermission("blocknotif.allowall"))*/) {
 
             event.setCancelled(true);
             event.getPlayer().sendMessage(messagesTxt.getMessage(MessagesTxt.MESSAGE_NOPERMISSION, null, null));
@@ -396,9 +396,9 @@ public class BlockNotif extends JavaPlugin implements Listener {
 
         // a user empty a bucket
         if (bucketUsePreventList.contains(new BlockData(event.getBucket()))
-                && !(event.getPlayer().hasPermission("blocknotif.allow.bucket." + event.getBucket().getId())
+                /*&& !(event.getPlayer().hasPermission("blocknotif.allow.bucket." + event.getBucket().getId())
                 || event.getPlayer().hasPermission("blocknotif.allow.bucket.*")
-                || event.getPlayer().hasPermission("blocknotif.allowall"))) {
+                || event.getPlayer().hasPermission("blocknotif.allowall"))*/) {
 
             event.setCancelled(true);
             event.getPlayer().sendMessage(messagesTxt.getMessage(MessagesTxt.MESSAGE_NOPERMISSION, null, null));
@@ -427,9 +427,9 @@ public class BlockNotif extends JavaPlugin implements Listener {
         }
 
         if (damager != null && entityKillPreventList.contains(new BlockData(event.getEntityType()))
-                && !(damager.hasPermission("blocknotif.allow.kill." + event.getEntityType().getTypeId())
+                /*&& !(damager.hasPermission("blocknotif.allow.kill." + event.getEntityType().getTypeId())
                 || damager.hasPermission("blocknotif.allow.kill.*")
-                || damager.hasPermission("blocknotif.allowall"))) {
+                || damager.hasPermission("blocknotif.allowall"))*/) {
 
             event.setCancelled(true);
             damager.sendMessage(messagesTxt.getMessage(MessagesTxt.MESSAGE_NOPERMISSION, null, null));
@@ -448,7 +448,7 @@ public class BlockNotif extends JavaPlugin implements Listener {
                 if (slot < maxInv) {
 
                     Player player = (Player) event.getWhoClicked();
-                    Block bl = player.getTargetBlock((HashSet<Byte>) null, 10);
+                    Block bl = player.getTargetBlock(null, 10);
                     ItemStack item = event.getNewItems().get(slot);
                     if (itemCheck(player, bl.getLocation(), new BlockData(item.getType()))) {
                         event.setCancelled(true);
@@ -473,7 +473,7 @@ public class BlockNotif extends JavaPlugin implements Listener {
                 || (event.getRawSlot() >= maxInv && event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY))) {
 
             Player player = (Player) event.getWhoClicked();
-            Block bl = player.getTargetBlock((HashSet<Byte>) null, 10);
+            Block bl = player.getTargetBlock(null, 10);
             ItemStack item;
 
             if (event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY) {
@@ -504,10 +504,10 @@ public class BlockNotif extends JavaPlugin implements Listener {
 
         // For prevent
         if (blockPlacePreventList.contains(blockData)
-                && !(player.hasPermission("blocknotif.allow.place." + blockData.getItemID())
+                /*&& !(player.hasPermission("blocknotif.allow.place." + blockData.getItemID())
                 || player.hasPermission("blocknotif.allow.place." + blockData.toString())
                 || player.hasPermission("blocknotif.allow.place.*")
-                || player.hasPermission("blocknotif.allowall"))) {
+                || player.hasPermission("blocknotif.allowall"))*/) {
 
             player.sendMessage(messagesTxt.getMessage(MessagesTxt.MESSAGE_NOPERMISSION, null, null));
 
@@ -515,9 +515,9 @@ public class BlockNotif extends JavaPlugin implements Listener {
 
             // For notify
         } else if (blockPlaceList.contains(blockData)
-                && !(player.hasPermission("blocknotif.ignore.place." + blockData.getItemID())
+                /*&& !(player.hasPermission("blocknotif.ignore.place." + blockData.getItemID())
                 || player.hasPermission("blocknotif.ignore.place." + blockData.toString())
-                || player.hasPermission("blocknotif.ignore.place.*"))) {
+                || player.hasPermission("blocknotif.ignore.place.*"))*/) {
 
             blockActionList.addAction(Calendar.getInstance(), player,
                     MessagesTxt.PLACE, location, blockData);

@@ -20,6 +20,8 @@ package me.tabinol.blocknotif;
 
 import java.io.File;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -27,6 +29,8 @@ import java.util.logging.Logger;
 import me.tabinol.blocknotif.utils.FileCopy;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+
+import com.google.common.base.Charsets;
 
 public class MessagesTxt {
 
@@ -124,7 +128,8 @@ public class MessagesTxt {
         // Look for defaults in the jar
         InputStream defConfigStream = blockNotif.getResource(LANGFILENAME);
         if (defConfigStream != null) {
-            YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
+        	Reader reader = new InputStreamReader(defConfigStream, Charsets.UTF_8);
+        	YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(reader);
             customConfig.setDefaults(defConfig);
         }
     }

@@ -19,8 +19,11 @@
 package me.tabinol.blocknotif.confdata;
 
 import me.tabinol.blocknotif.BlockNotif;
+
+import java.util.logging.Logger;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.SkullType;
 import org.bukkit.block.Block;
 import org.bukkit.block.Skull;
 import org.bukkit.entity.Entity;
@@ -39,6 +42,10 @@ public class BlockData implements Comparable<BlockData> {
     private byte itemData = 0;
     private boolean hasName = false;
     private String name = null;
+    private Material material = null ;
+    private EntityType entity = null ;
+    
+    Logger log = Bukkit.getLogger();
 
     public BlockData(BlockDataType blockDataType, String dataInf) throws Exception {
 
@@ -49,11 +56,19 @@ public class BlockData implements Comparable<BlockData> {
 
         if (blockDataType == BlockDataType.BLOCK && (mat = Material.matchMaterial(dataVal[0])) != null) {
             itemID = mat.getId();
+            this.material = mat ;
+            
+            log.info("mat: " + this.material.name() + ", id: " + itemID + ", datainf: " + dataInf);
         } else if (blockDataType == BlockDataType.ENTITY && (ent = EntityType.fromName(dataVal[0])) != null) {
             itemID = ent.getTypeId();
+            this.entity = ent ;
+            
+            log.info("entity: " + this.entity.name() + ", id: " + itemID + ", datainf: " + dataInf);
         } else {
+        	log.warning(dataInf + " is not a recognized block or entity.");
             itemID = Integer.parseInt(dataVal[0]);
         }
+        
         if (dataVal.length >= 2) {
             // If this is a skull
             if (itemID == 144) {
@@ -75,20 +90,19 @@ public class BlockData implements Comparable<BlockData> {
     public BlockData(Block bl) {
 
         blockDataType = BlockDataType.BLOCK;
-        itemID = bl.getTypeId();
+        itemID = bl.getType().getId();
 
         // If this is a head, get the name
-        if (bl.getType() == Material.SKULL) {
-            Skull skull = (Skull) bl.getState();
-            if (skull.getSkullType() == SkullType.PLAYER) {
-                if (skull.hasOwner()) {
-                    hasName = true;
-                    name = skull.getOwner();
-                }
-            } else {
-                hasName = true;
-                name = skull.getSkullType().name();
-            }
+        if (bl.getType() == Material.PLAYER_HEAD) {
+        	 Skull skull = (Skull) bl.getState();
+        	 if (skull.hasOwner()) {
+                 hasName = true;
+                 name = skull.getOwner();
+             }
+        }else if(bl.getType() == Material.CREEPER_HEAD || bl.getType() == Material.DRAGON_HEAD || bl.getType() == Material.ZOMBIE_HEAD) {
+       	 	Skull skull = (Skull) bl.getState();
+        	hasName = true;
+            name = skull.getSkullType().name();
         } else {
             // For a non skull
             hasData = true;
@@ -100,6 +114,7 @@ public class BlockData implements Comparable<BlockData> {
 
         blockDataType = BlockDataType.BLOCK;
         itemID = meterial.getId();
+        this.material = meterial ;
     }
 
     public BlockData(Entity entity) {
@@ -112,6 +127,7 @@ public class BlockData implements Comparable<BlockData> {
 
         blockDataType = BlockDataType.ENTITY;
         itemID = entityType.getTypeId();
+        this.entity = entityType ;
     }
 
     public BlockData(BlockDataType blockDataType, int itemID, boolean hasData, byte itemData, boolean hasName, String name) {
@@ -218,22 +234,24 @@ public class BlockData implements Comparable<BlockData> {
 
         // Get the name of Entity or Item
         if (blockDataType == BlockDataType.BLOCK) {
-            Material material = Material.getMaterial(itemID);
-            if (material == null) {
+        	log.info("Step one");
+            if (this.material == null) {
+            	log.info("Step two is bad");
                 iName.append(itemID);
             } else {
-                iName.append(material.name());
+            	log.info("Step two");
+                iName.append(this.material.name());
                 if (hasName) {
+                	log.info("Step three");
                     // Get the name if it is a skull
                     iName.append(":").append(name);
                 }
             }
         } else {
-            EntityType entityType = EntityType.fromId(itemID);
-            if (entityType == null) {
+            if (this.entity == null) {
                 iName.append(itemID);
             } else {
-                iName.append(entityType.name());
+                iName.append(this.entity.name());
             }
 
         }

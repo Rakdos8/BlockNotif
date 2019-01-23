@@ -33,10 +33,10 @@ ActionListen:
     
     # When a player kills an entity (villager, animal, monster, etc.)
     # Ignore permission: blocknotif.ignore.kill.<number>
-    EntityKill: [VILLAGER, VILLAGERGOLEM, ENTITYHORSE]
+    EntityKill: [VILLAGER, IRON_GOLEM, HORSE]
     
     # Show also the Land name (require Secuboid)?
-    ShowCuboidName: true
+    #ShowCuboidName: true
     
     # Notification from action in creative mode?
     Creative: true
