@@ -50,7 +50,7 @@ public class MessagesTxt {
         "MESSAGE_RELOAD",
         "MESSAGE_SPECIFYPLAYER",
         "MESSAGE_NOACTIVITY",
-        "MESSAGE_NOPERMISSION"
+        "MESSAGE_NOPERMISSION",
     };
     // type of Action
     public final static int DESTROY = 0;

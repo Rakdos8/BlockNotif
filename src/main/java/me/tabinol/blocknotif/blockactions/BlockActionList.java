@@ -21,10 +21,8 @@ package me.tabinol.blocknotif.blockactions;
 import java.util.Calendar;
 import java.util.LinkedList;
 import me.tabinol.blocknotif.BlockNotif;
-import me.tabinol.blocknotif.MessagesTxt;
 import me.tabinol.blocknotif.NotifyActionTask;
 import me.tabinol.blocknotif.confdata.BlockData;
-import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 

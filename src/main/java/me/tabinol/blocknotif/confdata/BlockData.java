@@ -20,32 +20,25 @@ package me.tabinol.blocknotif.confdata;
 
 import me.tabinol.blocknotif.BlockNotif;
 
-import java.util.logging.Logger;
-
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Skull;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 
 public class BlockData implements Comparable<BlockData> {
 
-    public enum BlockDataType {
+    public static enum BlockDataType {
 
         BLOCK,
         ENTITY;
     }
     private final BlockDataType blockDataType;
-    private int itemID = 0;
     private boolean hasData = false;
-    private byte itemData = 0;
+    private org.bukkit.block.data.BlockData itemData = null;
     private boolean hasName = false;
     private String name = null;
     private Material material = null ;
     private EntityType entity = null ;
-    
-    Logger log = Bukkit.getLogger();
 
     public BlockData(BlockDataType blockDataType, String dataInf) throws Exception {
 
@@ -55,141 +48,73 @@ public class BlockData implements Comparable<BlockData> {
         EntityType ent;
 
         if (blockDataType == BlockDataType.BLOCK && (mat = Material.matchMaterial(dataVal[0])) != null) {
-            itemID = mat.getId();
             this.material = mat ;
-            
-            log.info("mat: " + this.material.name() + ", id: " + itemID + ", datainf: " + dataInf);
-        } else if (blockDataType == BlockDataType.ENTITY && (ent = EntityType.fromName(dataVal[0])) != null) {
-            itemID = ent.getTypeId();
+            this.name = this.material.name();
+        } else if (blockDataType == BlockDataType.ENTITY && (ent = EntityType.valueOf(dataVal[0])) != null) {
             this.entity = ent ;
-            
-            log.info("entity: " + this.entity.name() + ", id: " + itemID + ", datainf: " + dataInf);
+            this.name = this.entity.name();
         } else {
-        	log.warning(dataInf + " is not a recognized block or entity.");
-            itemID = Integer.parseInt(dataVal[0]);
+        	BlockNotif.logWarn(dataInf + " is not a recognized block or entity.");
         }
         
         if (dataVal.length >= 2) {
             // If this is a skull
-            if (itemID == 144) {
+            if (this.material == Material.PLAYER_HEAD || this.material == Material.WITHER_SKELETON_SKULL
+            		|| this.material == Material.CREEPER_HEAD || this.material == Material.SKELETON_SKULL) {
                 hasName = true;
                 name = dataVal[1];
-            } else {
-                hasData = true;
-                itemData = adjustData(Byte.parseByte(dataVal[1]));
             }
         }
     }
 
-    public BlockData(BlockDataType blockDataType, int itemID) {
-
-        this.blockDataType = blockDataType;
-        this.itemID = itemID;
-    }
-
     public BlockData(Block bl) {
 
-        blockDataType = BlockDataType.BLOCK;
-        itemID = bl.getType().getId();
+        this.blockDataType = BlockDataType.BLOCK;
+        this.material = bl.getType() ;
+        this.name = this.material.name() ;
 
         // If this is a head, get the name
         if (bl.getType() == Material.PLAYER_HEAD) {
         	 Skull skull = (Skull) bl.getState();
         	 if (skull.hasOwner()) {
                  hasName = true;
-                 name = skull.getOwner();
+                 name = skull.getOwningPlayer().getName();
              }
         }else if(bl.getType() == Material.CREEPER_HEAD || bl.getType() == Material.DRAGON_HEAD || bl.getType() == Material.ZOMBIE_HEAD) {
        	 	Skull skull = (Skull) bl.getState();
         	hasName = true;
-            name = skull.getSkullType().name();
+            name = skull.getType().name();
         } else {
             // For a non skull
             hasData = true;
-            itemData = adjustData(bl.getData());
+            itemData = bl.getBlockData();
         }
     }
 
-    public BlockData(Material meterial) {
-
+    public BlockData(Material material) {
+    	
         blockDataType = BlockDataType.BLOCK;
-        itemID = meterial.getId();
-        this.material = meterial ;
-    }
-
-    public BlockData(Entity entity) {
-
-        blockDataType = BlockDataType.ENTITY;
-        itemID = entity.getEntityId();
+        this.material = material ;
+        this.name = material.name() ;
     }
 
     public BlockData(EntityType entityType) {
 
         blockDataType = BlockDataType.ENTITY;
-        itemID = entityType.getTypeId();
         this.entity = entityType ;
-    }
-
-    public BlockData(BlockDataType blockDataType, int itemID, boolean hasData, byte itemData, boolean hasName, String name) {
-
-        this.blockDataType = blockDataType;
-        this.itemID = itemID;
-        this.hasData = hasData;
-        this.itemData = adjustData(itemData);
-        this.hasName = hasName;
-        this.name = name;
-    }
-
-    public boolean equals(BlockData bd2) {
-
-        return blockDataType == bd2.blockDataType
-                && itemID == bd2.itemID
-                && (!bd2.hasData || !hasData
-                || itemData == bd2.itemData)
-                && (!bd2.hasName || !hasName
-                || name.equalsIgnoreCase(bd2.name));
-    }
-
-    public BlockData copyOf() {
-
-        return new BlockData(blockDataType, itemID, hasData, itemData, hasName, name);
+        this.name = entityType.name() ;
     }
 
     @Override
     public String toString() {
 
         if (hasData) {
-            return itemID + ":" + itemData;
+            return name + ":" + itemData;
         } else if (hasName) {
-            return itemID + ":" + name;
+            return name + ":" + name;
         } else {
-            return itemID + "";
+            return name + "";
         }
-    }
-
-    public int compareTo(BlockData bd2) {
-
-        if (blockDataType != bd2.blockDataType) {
-            return blockDataType.compareTo(bd2.blockDataType);
-        }
-        if (itemID < bd2.itemID) {
-            return -1;
-        }
-        if (itemID > bd2.itemID) {
-            return 1;
-        }
-        if (bd2.hasData && this.hasData) {
-            if (itemData < bd2.itemData) {
-                return -1;
-            }
-            if (itemData > bd2.itemData) {
-                return 1;
-            }
-        }
-        if (bd2.hasName && this.hasName) {
-            return name.compareToIgnoreCase(bd2.name);
-        }
-        return 0;
     }
 
     public BlockDataType getBlockDataType() {
@@ -197,17 +122,12 @@ public class BlockData implements Comparable<BlockData> {
         return blockDataType;
     }
 
-    public int getItemID() {
-
-        return itemID;
-    }
-
     public boolean hasData() {
 
         return hasData;
     }
 
-    public int getItemData() {
+    public org.bukkit.block.data.BlockData getItemData() {
 
         return itemData;
     }
@@ -228,49 +148,46 @@ public class BlockData implements Comparable<BlockData> {
         StringBuilder iName = new StringBuilder();
 
         // Get color
-        if ((colSrc = BlockNotif.getThisPlugin().getConfig().getString("Color." + blockDataType + "." + itemID)) != null) {
+        if ((colSrc = BlockNotif.getThisPlugin().getConfig().getString("Color." + blockDataType + "." + name)) != null) {
             iName.append(colSrc.replaceAll("&", "§"));
         }
 
-        // Get the name of Entity or Item
-        if (blockDataType == BlockDataType.BLOCK) {
-        	log.info("Step one");
-            if (this.material == null) {
-            	log.info("Step two is bad");
-                iName.append(itemID);
-            } else {
-            	log.info("Step two");
-                iName.append(this.material.name());
-                if (hasName) {
-                	log.info("Step three");
-                    // Get the name if it is a skull
-                    iName.append(":").append(name);
-                }
-            }
-        } else {
-            if (this.entity == null) {
-                iName.append(itemID);
-            } else {
-                iName.append(this.entity.name());
-            }
 
+        iName.append(this.name);
+        if (hasName) {
+            // Get the name if it is a skull
+            iName.append(":").append(name);
         }
-
+        
         return iName.toString();
     }
 
-    private byte adjustData(byte DataToAdj) {
+	@Override
+    public int compareTo(BlockData bd2) {
 
-        // wood
-        if (itemID == 17) {
-            return (byte) (DataToAdj & 3);
+        if (this.blockDataType != bd2.blockDataType) {
+            return this.blockDataType.compareTo(bd2.blockDataType);
         }
+        
+        if(this.blockDataType == BlockDataType.BLOCK) {
 
-        // Block of quartz
-        if (itemID == 155 && DataToAdj >= 2) {
-            return 2;
+            if(this.material == bd2.material) {
+            	return 0 ;
+            }
+            
+            return this.material.name().compareTo(bd2.material.name()) ;
+            
+        }else if(this.blockDataType == BlockDataType.ENTITY) {
+
+            if(this.entity == bd2.entity) {
+            	return 0 ;
+            }
+            
+            return this.entity.name().compareTo(bd2.entity.name()) ;
+        	
+        }else {
+        	BlockNotif.logWarn("Comparison of two BlockData that are not blocks or entities. (" + this.getDisplay() + "," + bd2.getDisplay() + ")");
+        	return 0 ;
         }
-
-        return DataToAdj;
     }
 }

@@ -3,40 +3,36 @@
 # Do you want a log file in BlockNotif directory?
 LogFile: false
 
+# Disables bypass permissions
+Debug: true
+
 # List here for which block you want to be notified
 # You can use ['*'] for ALL blocks (Recommended only for BlockIgnite)
-# For an empty list, put [] and remove any "- XX", example: "BlockBreak: []"
-# You can use XX or 'XX:XX' (with ')
-# (see http://www.minecraftwiki.net/wiki/Data_values)
+# For an empty list, put []
+# (see https://minecraft.gamepedia.com/Java_Edition_data_values)
 # Or use the "Bukkit name"
-# blocks: http://jd.bukkit.org/rb/apidocs/org/bukkit/Material.html
-# entities: http://www.minecraftwiki.net/wiki/Data_values#Entity_IDs
-# Skull: You can type 'SKULL:Name', example : 'SKULL:Creeper' or 'SKULL:Player'
-# Example: BlockBreak: ['17:3', 21, DIAMOND_ORE]
 ActionListen:
 
     # When a user removes/takes/mines a block
-    # Ignore permission: blocknotif.ignore.break.<number>[:<data>]
-    BlockBreak: [DIAMOND_ORE, EMERALD_ORE, GOLD_ORE]
+    # Ignore permission: blocknotif.ignore.break.<name>[:<data>]
+    BlockBreak: [DIAMOND_ORE,EMERALD_ORE, GOLD_ORE]
 
     # When a user places a block
-    # Ignore permission: blocknotif.ignore.place.<number>[:<data>]
+    # Ignore permission: blocknotif.ignore.place.<name>[:<data>]
     BlockPlace: [TNT]
     
     # When a user puts fire
-    # Ignore permission: blocknotif.ignore.ignite.<number>[:<data>]
+    # Ignore permission: blocknotif.ignore.ignite.<name>[:<data>]
     BlockIgnite: ['*']
     
-    # When a user uses bucket (326=water and/or 327=lava)
-    # Ignore permission: blocknotif.ignore.bucket.<number>
-    BucketUse: [LAVA_BUCKET, WATER_BUCKET]
+    # When a user uses bucket
+    # Be careful, cod_bucket and other buckets of fish are not counted as water bucket.
+    # Ignore permission: blocknotif.ignore.bucket.<name>
+    BucketUse: [WATER_BUCKET]
     
     # When a player kills an entity (villager, animal, monster, etc.)
-    # Ignore permission: blocknotif.ignore.kill.<number>
+    # Ignore permission: blocknotif.ignore.kill.<name>
     EntityKill: [VILLAGER, IRON_GOLEM, HORSE]
-    
-    # Show also the Land name (require Secuboid)?
-    #ShowCuboidName: true
     
     # Notification from action in creative mode?
     Creative: true
@@ -49,24 +45,24 @@ ActionListen:
 ActionPrevent:
     
     # When a user removes/takes/mines a block
-    # Allow permission: blocknotif.allow.break.<number>[:<data>]
+    # Allow permission: blocknotif.allow.break.<name>[:<data>]
     BlockBreak: []
     
     # When a user places a block
-    # Allow permission: blocknotif.allow.place.<number>[:<data>]
+    # Allow permission: blocknotif.allow.place.<name>[:<data>]
     BlockPlace: []
     
     # When a user puts fire
     # Note: Put "49" to prevent Nether portal creation
-    # Allow permission: blocknotif.allow.ignite.<number>[:<data>]
-    BlockIgnite: []
+    # Allow permission: blocknotif.allow.ignite.<name>[:<data>]
+    BlockIgnite: [OBSIDIAN]
     
-    # When a user uses bucket (326=water and/or 327=lava)
-    # Allow permission: blocknotif.allow.bucket.<number>
-    BucketUse: []
+    # When a user uses bucket
+    # Allow permission: blocknotif.allow.bucket.<name>
+    BucketUse: [LAVA_BUCKET]
     
     # When a player kills an entity (villager, animal, monster, etc.)
-    # Allow permission: blocknotif.allow.kill.<number>
+    # Allow permission: blocknotif.allow.kill.<name>
     EntityKill: []
 
 # You can customize colors for each items and entities
