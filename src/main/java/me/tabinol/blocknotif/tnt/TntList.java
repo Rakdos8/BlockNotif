@@ -20,51 +20,66 @@ package me.tabinol.blocknotif.tnt;
 
 import java.util.Calendar;
 import java.util.LinkedList;
-import me.tabinol.blocknotif.BlockNotif;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+/**
+ * TntList
+ * @author Tabinol
+ */
 public class TntList extends LinkedList<TntEntry> {
 
-    private static final long serialVersionUID = 4025050512327193640L;
-    BlockNotif blockNotif;
+	private static final long serialVersionUID = 4025050512327193640L;
 
-    public TntList() {
+	/**
+	 * Add new action in list
+	 * @param calendar Calendar
+	 * @param player Player
+	 * @param location Location
+	 */
+	public void addAction(final Calendar calendar, final Player player, final Location location) {
 
-        this.blockNotif = BlockNotif.getThisPlugin();
-    }
+		final TntEntry tntEntry = new TntEntry(calendar, player, location);
+		// Anti duplication
+		if (this.isEmpty() || !tntEntry.equals(this.getLast())) {
+			addLast(tntEntry);
+		}
+	}
 
-    public void addAction(Calendar calendar, Player player, Location location) {
+	/**
+	 * Get player from location
+	 * @param location Location
+	 * @return Player
+	 */
+	public Player getPlayer(final Location location) {
 
-        final TntEntry tntEntry = new TntEntry(calendar, player, location);
-        // Anti duplication
-        if (this.isEmpty() || !tntEntry.equals(this.getLast())) {
-            addLast(tntEntry);
-        }
-    }
+		Player player = null;
+		int t = 0;
+		boolean foundIt = false;
 
-    public Player getPlayer(Location location) {
+		while (!isEmpty() && t != size() && !foundIt) {
+			if (compareTnt((int) location.getX(), get(t).getLocation().getBlockX(), 15)
+					&& compareTnt((int) location.getY(), get(t).getLocation().getBlockY(), 50)
+					&& compareTnt((int) location.getZ(), get(t).getLocation().getBlockZ(), 15)) {
+				foundIt = true;
+				player = get(t).getPlayer();
 
-        Player player = null;
-        int t = 0;
-        boolean foundIt = false;
+			}
+			t++;
+		}
 
-        while (!isEmpty() && t != size() && !foundIt) {
-            if (compareTnt((int) location.getX(), get(t).getLocation().getBlockX(), 15)
-                    && compareTnt((int) location.getY(), get(t).getLocation().getBlockY(), 50)
-                    && compareTnt((int) location.getZ(), get(t).getLocation().getBlockZ(), 15)) {
-                foundIt = true;
-                player = get(t).getPlayer();
+		return player;
+	}
 
-            }
-            t++;
-        }
+	/**
+	 * Near tnt
+	 * @param a a
+	 * @param b b
+	 * @param distance Distance
+	 * @return Boolean
+	 */
+	private static boolean compareTnt(final int a, final int b, final int distance) {
 
-        return player;
-    }
-
-    public static boolean compareTnt(int a, int b, int distance) {
-
-        return a >= b - distance && a <= b + distance;
-    }
+		return a >= b - distance && a <= b + distance;
+	}
 }

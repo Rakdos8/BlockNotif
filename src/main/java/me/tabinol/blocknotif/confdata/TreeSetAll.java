@@ -20,44 +20,57 @@ package me.tabinol.blocknotif.confdata;
 import java.util.Collection;
 import java.util.TreeSet;
 
+/**
+ * TreeSetAll
+ * @author Tabinol
+ * @param <E> E
+ */
 public class TreeSetAll<E> extends TreeSet<E> {
 
-    /**
+	/**
 	 * Serial Number
 	 */
 	private static final long serialVersionUID = -3235246768443291689L;
 	private boolean isAll = false;
-    
-    public TreeSetAll() {
-        
-        super();
-    }
 
-    @Override
-    public boolean contains(Object o) {
+	/**
+	 * Initialise TreeSetAll
+	 */
+	public TreeSetAll() {
+		
+		super();
+	}
 
-        if (isAll) {
-            return true;
-        }
-        return super.contains(o);
-    }
+	@Override
+	public boolean contains(final Object o) {
 
-    @Override
-    public boolean containsAll(Collection<?> clctn) {
+		if (isAll) {
+			return true;
+		}
+		return super.contains(o);
+	}
 
-        if (isAll) {
-            return true;
-        }
-        return super.containsAll(clctn);
-    }
+	@Override
+	public boolean containsAll(final Collection<?> clctn) {
 
-    public void setIsAll(boolean isAll) {
+		if (isAll) {
+			return true;
+		}
+		return super.containsAll(clctn);
+	}
 
-        this.isAll = isAll;
-    }
-    
-    public boolean getIsAll() {
-        
-        return isAll;
-    }
+	public void setIsAll(final boolean isAll) {
+
+		this.isAll = isAll;
+	}
+
+	@Override
+	public final int hashCode() {
+		return super.hashCode() ;
+	}
+
+	@Override
+	public boolean equals(final Object obj){
+		return super.equals(obj) ;
+	}
 }

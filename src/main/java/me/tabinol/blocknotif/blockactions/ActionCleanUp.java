@@ -22,12 +22,18 @@ import java.util.Calendar;
 import me.tabinol.blocknotif.BlockNotif;
 import org.bukkit.scheduler.BukkitRunnable;
 
-// Clean Up Action in memory
+/**
+ * Clean Up Action in memory
+ * @author Tabinol
+ */
 public class ActionCleanUp extends BukkitRunnable {
 
 	private Calendar timeBefore;
 	private BlockNotif blockNotif;
-	
+
+	/**
+	 * Initialise memory
+	 */
 	public ActionCleanUp() { 
 		
 		super();
@@ -37,7 +43,8 @@ public class ActionCleanUp extends BukkitRunnable {
 	
 	@Override
 	public void run() {
-		int t = 0, u = 0;
+		int t = 0 ;
+		int u = 0 ;
 		
 		// Clean up Block Action List
 		while(!BlockNotif.getBlockActionList().isEmpty() &&
@@ -62,9 +69,12 @@ public class ActionCleanUp extends BukkitRunnable {
 		
 	}
 
+	/**
+	 * Schedule
+	 */
 	public void scheduleAction() {
 
 		runTaskLater(blockNotif,
-				20 * blockNotif.getConfig().getInt("History.MaxTimeKeep"));
+				20 * blockNotif.getConfig().getLong("History.MaxTimeKeep"));
 	}
 }

@@ -19,40 +19,74 @@
 package me.tabinol.blocknotif.tnt;
 
 import java.util.Calendar;
+
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.bukkit.entity.Player;
 import org.bukkit.Location;
 
-public class TntEntry {
+/**
+ * TntEntry
+ * @author Tabinol
+ */
+public final class TntEntry {
 
-    private Calendar calendar;
-    private Player player;
-    private Location location;
+	private Calendar calendar;
+	private Player player;
+	private Location location;
 
-    public TntEntry(Calendar calendar, Player player, Location location) {
+	/**
+	 * Initialise TntEntry
+	 * @param calendar Calendar
+	 * @param player Player
+	 * @param location Location
+	 */
+	TntEntry(final Calendar calendar, final Player player, final Location location) {
 
-        this.calendar = calendar;
-        this.player = player;
-        this.location = location;
-    }
+		this.calendar = calendar;
+		this.player = player;
+		this.location = location;
+	}
 
-    public boolean equals(TntEntry tntEntryB) {
+	@Override
+	public final int hashCode(){
+		return new HashCodeBuilder()
+				.append(player)
+				.append(location)
+				.hashCode();
+	}
 
-        return player.getName().equals(tntEntryB.player.getName())
-                && location.equals(tntEntryB.location);
-    }
+	/**
+	 * Check if two TntEntry are similar
+	 * @param object TntEntry object
+	 * @return same TntEntry
+	 */
+	@Override
+	public final boolean equals(final Object object) {
 
-    public Location getLocation() {
+		if(object instanceof TntEntry){
 
-        return location;
-    }
+			final TntEntry tntEntryB = (TntEntry) object ;
 
-    public Calendar getCalendar() {
+			return player.getName().equals(tntEntryB.player.getName())
+					&& location.equals(tntEntryB.location);
+		}
 
-        return calendar;
-    }
+		return false ;
 
-    public Player getPlayer() {
+	}
 
-        return player;
-    }
+	Location getLocation() {
+
+		return location;
+	}
+
+	public Calendar getCalendar() {
+
+		return calendar;
+	}
+
+	public Player getPlayer() {
+
+		return player;
+	}
 }

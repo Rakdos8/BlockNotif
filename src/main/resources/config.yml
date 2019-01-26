@@ -33,10 +33,10 @@ ActionListen:
     # When a player kills an entity (villager, animal, monster, etc.)
     # Ignore permission: blocknotif.ignore.kill.<name>
     EntityKill: [VILLAGER, IRON_GOLEM, HORSE]
-    
-    # Notification from action in creative mode?
+
+    # Notification when player is creative ?
     Creative: true
-    
+
     # Notification when TNT explode?
     TntExplode: true
     
@@ -55,7 +55,7 @@ ActionPrevent:
     # When a user puts fire
     # Note: Put "49" to prevent Nether portal creation
     # Allow permission: blocknotif.allow.ignite.<name>[:<data>]
-    BlockIgnite: [OBSIDIAN, FIRE]
+    BlockIgnite: [OBSIDIAN]
     
     # When a user uses bucket
     # Allow permission: blocknotif.allow.bucket.<name>

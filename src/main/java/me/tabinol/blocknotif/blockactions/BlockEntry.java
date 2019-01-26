@@ -23,57 +23,65 @@ import me.tabinol.blocknotif.BlockNotif;
 import me.tabinol.blocknotif.confdata.BlockData;
 import org.bukkit.Location;
 
+/**
+ * Blocks information
+ * @author Tabinol
+ */
 public class BlockEntry {
 
-    private final Calendar calendar;
-    private final String playerName;
-    private final int action; // type of action
-    private final Location location;
-    private final BlockData blockData;
+	private final Calendar calendar;
+	private final String playerName;
+	private final int action;
+	private final Location location;
+	private final BlockData blockData;
 
-    public BlockEntry(Calendar calendar, String playerName, int action, Location location, BlockData blockData) {
+	/**
+	 * Initialise BlockEntry
+	 * @param calendar Calendar
+	 * @param playerName Player name
+	 * @param action Action
+	 * @param location Location
+	 * @param blockData Block data
+	 */
+	public BlockEntry(final Calendar calendar, final String playerName, final int action, final Location location, final BlockData blockData) {
 
-        this.calendar = calendar;
-        this.playerName = playerName;
-        this.action = action;
-        this.location = location;
-        this.blockData = blockData;
-    }
+		this.calendar = calendar;
+		this.playerName = playerName;
+		this.action = action;
+		this.location = location;
+		this.blockData = blockData;
+	}
 
-    public String getMessage() {
+	public String getMessage() {
 
-        return BlockNotif.getMessagesTxt().getMessage(action,
-                new String[]{"<time>", "<player>", "<block>", "<world>", "<posx>", "<posy>", "<posz>"},
-                new String[]{getTime(), playerName, blockData.getDisplay(), location.getWorld().getName(),
-            Integer.toString(location.getBlockX()), Integer.toString(location.getBlockY()), Integer.toString(location.getBlockZ())});
-    }
+		return BlockNotif.getMessagesTxt().getMessage(action,
+				new String[]{"<time>", "<player>", "<block>", "<world>", "<posx>", "<posy>", "<posz>"},
+				new String[]{getTime(), playerName, blockData.getDisplay(), location.getWorld().getName(),
+			Integer.toString(location.getBlockX()), Integer.toString(location.getBlockY()), Integer.toString(location.getBlockZ())});
+	}
 
-    public String getTime() {
+	private String getTime() {
 
-        return String.format("%02d:%02d:%02d", calendar.get(Calendar.HOUR_OF_DAY),
-                calendar.get(Calendar.MINUTE), calendar.get(Calendar.SECOND));
-    }
+		return String.format("%02d:%02d:%02d", calendar.get(Calendar.HOUR_OF_DAY),
+				calendar.get(Calendar.MINUTE), calendar.get(Calendar.SECOND));
+	}
 
-    public boolean equals(BlockEntry blockEntryB) {
+	public Calendar getCalendar() {
 
-        return playerName.equals(blockEntryB.playerName)
-                && this.action == blockEntryB.action
-                && location.equals(blockEntryB.location)
-                && this.blockData.equals(blockEntryB.blockData);
-    }
+		return calendar;
+	}
 
-    public Calendar getCalendar() {
+	public String getPlayerName() {
 
-        return calendar;
-    }
+		return playerName;
+	}
 
-    public String getPlayerName() {
+	/**
+	 * Format for action list
+	 * @return Formatted string
+	 */
+	public String toActionInList() {
 
-        return playerName;
-    }
-
-    public String toActionInList() {
-
-        return playerName + ":" + action + ":" + blockData;
-    }
+		return playerName + ":" + action + ":" + blockData;
+	}
 }
