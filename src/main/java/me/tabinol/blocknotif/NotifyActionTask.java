@@ -66,7 +66,7 @@ public class NotifyActionTask extends BukkitRunnable {
 			
 		} while(blockEntry.getCalendar().after(calendar) && cmp != 0);
 		
-		sendNotificationMessage(blockEntryLast, nbOfValue);
+		if(blockEntryLast != null) sendNotificationMessage(blockEntryLast, nbOfValue);
 	}
 		
 	public static void sendNotificationMessage(BlockEntry blockEntryLast, int nbOfValue) {

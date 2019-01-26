@@ -29,35 +29,18 @@ import java.util.Scanner;
 public class FileCopy {
 
     public static void copyFile(File fileR, File fileW) throws Exception {
-
-    	Writer output = null ;
     	
         final String newLine = System.getProperty("line.separator");
         
-        try {
-        	
-	        output = new BufferedWriter(new FileWriter(fileW, true));
+        try(final Writer output = new BufferedWriter(new FileWriter(fileW, true))) {
 	        
-	        Scanner scanner = null;
-	        
-	        try {
-	        
-		        scanner = new Scanner(fileR, "UTF-8");
+	        try(final Scanner scanner = new Scanner(fileR, "UTF-8")) {
 		
 		        while (scanner.hasNextLine()) {
 		            output.write(scanner.nextLine());
 		            output.write(newLine);
 		        }
-        	
-	        }finally {
-		        
-		        scanner.close();
-				
-			}
-    	
-        }finally {
-        	output.close();
-		}
-        
+	        }
+        }
     }
 }

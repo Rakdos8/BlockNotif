@@ -187,8 +187,9 @@ public class BlockNotif extends JavaPlugin implements Listener {
                 try {
                     bd.add(new BlockData(blockDataType, value));
                 } catch (Exception ex) {
-                    this.getLogger().log(Level.WARNING, "In config.yml, {0}: {1} is invalid!",
+                	this.getLogger().log(Level.WARNING, "In config.yml, {0}: {1} is invalid!",
                             new Object[]{strPath, value});
+                    this.getLogger().log(Level.FINE, ex.getMessage(), ex);
                 }
             }
         }
@@ -460,9 +461,9 @@ public class BlockNotif extends JavaPlugin implements Listener {
         }
 
         if (damager != null && entityKillPreventList.contains(new BlockData(event.getEntityType()))
-                /*&& !(damager.hasPermission("blocknotif.allow.kill." + event.getEntityType().getTypeId())
+                && (debug || !(damager.hasPermission("blocknotif.allow.kill." + event.getEntityType().name())
                 || damager.hasPermission("blocknotif.allow.kill.*")
-                || damager.hasPermission("blocknotif.allowall"))*/) {
+                || damager.hasPermission("blocknotif.allowall")))) {
 
             event.setCancelled(true);
             damager.sendMessage(messagesTxt.getMessage(MessagesTxt.MESSAGE_NOPERMISSION, null, null));
@@ -537,10 +538,10 @@ public class BlockNotif extends JavaPlugin implements Listener {
 
         // For prevent
         if (blockPlacePreventList.contains(blockData)
-                /*&& !(player.hasPermission("blocknotif.allow.place." + blockData.getItemID())
+                && ( debug || !(player.hasPermission("blocknotif.allow.place." + blockData.getName())
                 || player.hasPermission("blocknotif.allow.place." + blockData.toString())
                 || player.hasPermission("blocknotif.allow.place.*")
-                || player.hasPermission("blocknotif.allowall"))*/) {
+                || player.hasPermission("blocknotif.allowall")))) {
 
             player.sendMessage(messagesTxt.getMessage(MessagesTxt.MESSAGE_NOPERMISSION, null, null));
 
@@ -548,9 +549,9 @@ public class BlockNotif extends JavaPlugin implements Listener {
 
             // For notify
         } else if (blockPlaceList.contains(blockData)
-                /*&& !(player.hasPermission("blocknotif.ignore.place." + blockData.getItemID())
+                && (debug || !(player.hasPermission("blocknotif.ignore.place." + blockData.getName())
                 || player.hasPermission("blocknotif.ignore.place." + blockData.toString())
-                || player.hasPermission("blocknotif.ignore.place.*"))*/) {
+                || player.hasPermission("blocknotif.ignore.place.*")))) {
 
             blockActionList.addAction(Calendar.getInstance(), player,
                     MessagesTxt.PLACE, location, blockData);

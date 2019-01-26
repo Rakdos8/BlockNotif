@@ -55,7 +55,7 @@ ActionPrevent:
     # When a user puts fire
     # Note: Put "49" to prevent Nether portal creation
     # Allow permission: blocknotif.allow.ignite.<name>[:<data>]
-    BlockIgnite: [OBSIDIAN]
+    BlockIgnite: [OBSIDIAN, FIRE]
     
     # When a user uses bucket
     # Allow permission: blocknotif.allow.bucket.<name>
