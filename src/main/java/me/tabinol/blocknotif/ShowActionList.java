@@ -24,7 +24,6 @@ import org.bukkit.util.ChatPaginator;
 // Show action list has request from a player
 public class ShowActionList {
 
-    private BlockNotif blockNotif;
     private CommandSender sender;
     private String playerName;
     private int pageNumber;
@@ -32,7 +31,6 @@ public class ShowActionList {
     public ShowActionList(CommandSender sender, String playerName, int pageNumber) {
 
         super();
-        blockNotif = BlockNotif.getThisPlugin();
         this.sender = sender;
         this.playerName = playerName;
         this.pageNumber = pageNumber;
@@ -42,20 +40,20 @@ public class ShowActionList {
 
         boolean hasAction = false;
         int t;
-        StringBuilder listAction = new StringBuilder();
+        final StringBuilder listAction = new StringBuilder();
 
-        for (t = BlockNotif.blockActionList.size() - 1; t >= 0; t--) {
-            if (BlockNotif.blockActionList.get(t).getPlayerName().equalsIgnoreCase(playerName)) {
+        for (t = BlockNotif.getBlockActionList().size() - 1; t >= 0; t--) {
+            if (BlockNotif.getBlockActionList().get(t).getPlayerName().equalsIgnoreCase(playerName)) {
                 // sender.sendMessage(blockNotif.blockActionList.get(t).getMessage());
                 // Get messages into big String
-                listAction.append(BlockNotif.blockActionList.get(t).getMessage()).append('\n');
+                listAction.append(BlockNotif.getBlockActionList().get(t).getMessage()).append('\n');
                 hasAction = true;
             }
         }
         if (hasAction == true) {
             sendListAction(listAction.toString(), pageNumber);
         } else {
-            sender.sendMessage(blockNotif.messagesTxt.getMessage(MessagesTxt.MESSAGE_NOACTIVITY, null, null));
+            sender.sendMessage(BlockNotif.getMessagesTxt().getMessage(MessagesTxt.MESSAGE_NOACTIVITY, null, null));
         }
 
     }
@@ -75,7 +73,7 @@ public class ShowActionList {
             pageWidth = ChatPaginator.AVERAGE_CHAT_PAGE_WIDTH;
         }
 
-        ChatPaginator.ChatPage page = ChatPaginator.paginate(listAction, pageNumber, pageWidth, pageHeight);
+        final ChatPaginator.ChatPage page = ChatPaginator.paginate(listAction, pageNumber, pageWidth, pageHeight);
 
         sender.sendMessage(page.getLines());
         sender.sendMessage("---(" + page.getPageNumber() + "/" + page.getTotalPages() + ")---");

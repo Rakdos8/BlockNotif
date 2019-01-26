@@ -30,17 +30,34 @@ public class FileCopy {
 
     public static void copyFile(File fileR, File fileW) throws Exception {
 
-        String newLine = System.getProperty("line.separator");
-        Writer output = new BufferedWriter(new FileWriter(fileW, true));
-        Scanner scanner;
-        scanner = new Scanner(fileR, "UTF-8");
-
-        while (scanner.hasNextLine()) {
-            output.write(scanner.nextLine());
-            output.write(newLine);
-        }
+    	Writer output = null ;
+    	
+        final String newLine = System.getProperty("line.separator");
         
-        scanner.close();
-        output.close();
+        try {
+        	
+	        output = new BufferedWriter(new FileWriter(fileW, true));
+	        
+	        Scanner scanner = null;
+	        
+	        try {
+	        
+		        scanner = new Scanner(fileR, "UTF-8");
+		
+		        while (scanner.hasNextLine()) {
+		            output.write(scanner.nextLine());
+		            output.write(newLine);
+		        }
+        	
+	        }finally {
+		        
+		        scanner.close();
+				
+			}
+    	
+        }finally {
+        	output.close();
+		}
+        
     }
 }

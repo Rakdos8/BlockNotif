@@ -32,12 +32,10 @@ public class BlockActionList extends LinkedList<BlockEntry> {
      *
      */
     private static final long serialVersionUID = -2474988612847951992L;
-    private final BlockNotif blockNotif;
 
     public BlockActionList() {
 
         super();
-        blockNotif = BlockNotif.getThisPlugin();
     }
 
     // Add Action (common)
@@ -58,17 +56,17 @@ public class BlockActionList extends LinkedList<BlockEntry> {
             }
             
             // Add entry and Notify
-            BlockEntry blockEntry = new BlockEntry(calendar, playerName,
-                    action, null, location, blockData);
+            final BlockEntry blockEntry = new BlockEntry(calendar, playerName,
+                    action, location, blockData);
             // Anti duplication
             if (this.isEmpty() || !blockEntry.equals(this.getLast())) {
                 addLast(blockEntry);
-                blockNotif.logTask.writeLog(blockEntry.getMessage().replaceAll("§.", ""));
+                BlockNotif.getLogTask().writeLog(blockEntry.getMessage().replaceAll("§.", ""));
                 // Check if Entry exist, if not, add it
-                String actionInList = blockEntry.toActionInList();
-                if (!blockNotif.inActionList.contains(actionInList)) {
-                    new NotifyActionTask(this, calendar, actionInList).runTaskLater(blockNotif,
-                            20 * BlockNotif.History_TimeBeforeNotify);
+                final String actionInList = blockEntry.toActionInList();
+                if (!BlockNotif.getInActionList().contains(actionInList)) {
+                    new NotifyActionTask(this, calendar, actionInList).runTaskLater(BlockNotif.getThisPlugin(),
+                            20 * BlockNotif.getHistory_TimeBeforeNotify());
 
                 }
             }

@@ -43,7 +43,7 @@ public class BlockData implements Comparable<BlockData> {
     public BlockData(BlockDataType blockDataType, String dataInf) throws Exception {
 
         this.blockDataType = blockDataType;
-        String[] dataVal = dataInf.split(":");
+        final String[] dataVal = dataInf.split(":");
         Material mat;
         EntityType ent;
 
@@ -75,13 +75,13 @@ public class BlockData implements Comparable<BlockData> {
 
         // If this is a head, get the name
         if (bl.getType() == Material.PLAYER_HEAD) {
-        	 Skull skull = (Skull) bl.getState();
+        	 final Skull skull = (Skull) bl.getState();
         	 if (skull.hasOwner()) {
                  hasName = true;
                  name = skull.getOwningPlayer().getName();
              }
         }else if(bl.getType() == Material.CREEPER_HEAD || bl.getType() == Material.DRAGON_HEAD || bl.getType() == Material.ZOMBIE_HEAD) {
-       	 	Skull skull = (Skull) bl.getState();
+       	 	final Skull skull = (Skull) bl.getState();
         	hasName = true;
             name = skull.getType().name();
         } else {
@@ -145,7 +145,7 @@ public class BlockData implements Comparable<BlockData> {
     public String getDisplay() {
 
         String colSrc;
-        StringBuilder iName = new StringBuilder();
+        final StringBuilder iName = new StringBuilder();
 
         // Get color
         if ((colSrc = BlockNotif.getThisPlugin().getConfig().getString("Color." + blockDataType + "." + name)) != null) {

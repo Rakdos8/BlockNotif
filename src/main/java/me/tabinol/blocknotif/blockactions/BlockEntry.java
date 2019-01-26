@@ -25,39 +25,26 @@ import org.bukkit.Location;
 
 public class BlockEntry {
 
-    private final BlockNotif blockNotif;
     private final Calendar calendar;
     private final String playerName;
     private final int action; // type of action
-    private final String cuboid;
     private final Location location;
     private final BlockData blockData;
 
-    public BlockEntry(Calendar calendar, String playerName, int action,
-            String cuboid, Location location, BlockData blockData) {
+    public BlockEntry(Calendar calendar, String playerName, int action, Location location, BlockData blockData) {
 
-        blockNotif = BlockNotif.getThisPlugin();
         this.calendar = calendar;
         this.playerName = playerName;
         this.action = action;
-        this.cuboid = cuboid;
         this.location = location;
         this.blockData = blockData;
     }
 
     public String getMessage() {
 
-        String cuboidWorld;
-
-        if (cuboid != null && !cuboid.equals("")) {
-            cuboidWorld = cuboid + "/" + location.getWorld().getName();
-        } else {
-            cuboidWorld = location.getWorld().getName();
-        }
-
-        return blockNotif.messagesTxt.getMessage(action,
+        return BlockNotif.getMessagesTxt().getMessage(action,
                 new String[]{"<time>", "<player>", "<block>", "<world>", "<posx>", "<posy>", "<posz>"},
-                new String[]{getTime(), playerName, blockData.getDisplay(), cuboidWorld,
+                new String[]{getTime(), playerName, blockData.getDisplay(), location.getWorld().getName(),
             Integer.toString(location.getBlockX()), Integer.toString(location.getBlockY()), Integer.toString(location.getBlockZ())});
     }
 

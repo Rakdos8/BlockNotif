@@ -56,15 +56,19 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
+/**
+ 	* Main class of the BlockNotif plugin.
+ 	* @author Tabinol & Bhasher
+ 	*/
 public class BlockNotif extends JavaPlugin implements Listener {
 
-    public static BlockActionList blockActionList;
-    public TntList tntList;
+    private static BlockActionList blockActionList;
+    private static TntList tntList;
     // List for action who are in progress
     // Stored "player:action:item"
-    public List<String> inActionList;
-    public MessagesTxt messagesTxt;
-    public LogTask logTask;
+    private static List<String> inActionList;
+    private static MessagesTxt messagesTxt;
+    private static LogTask logTask;
     private TreeSetAll<BlockData> blockBreakList;
     private TreeSetAll<BlockData> blockPlaceList;
     private TreeSetAll<BlockData> blockIgniteList;
@@ -78,8 +82,8 @@ public class BlockNotif extends JavaPlugin implements Listener {
     private boolean watchTntExplode;
     private static BlockNotif thisPlugin;
     // for config
-    public static int History_TimeBeforeNotify;
-    public static boolean ActionListen_Creative;
+    private static int History_TimeBeforeNotify;
+    private static boolean ActionListen_Creative;
     
     public static boolean debug ;
 
@@ -89,6 +93,7 @@ public class BlockNotif extends JavaPlugin implements Listener {
         this.saveDefaultConfig();
         thisPlugin = this;
         blockActionList = new BlockActionList();
+        
         tntList = new TntList();
         inActionList = new ArrayList<String>();
         logTask = new LogTask();
@@ -108,6 +113,36 @@ public class BlockNotif extends JavaPlugin implements Listener {
     public static BlockActionList getBlockActionList() {
 
         return blockActionList;
+    }
+
+    public static TntList getTntList() {
+
+        return tntList;
+    }
+
+    public static List<String> getInActionList() {
+
+        return inActionList;
+    }
+    
+    public static int getHistory_TimeBeforeNotify() {
+    	
+    	return History_TimeBeforeNotify ;
+    }
+    
+    public static boolean getActionListen_Creative() {
+    	
+    	return ActionListen_Creative ;
+    }
+    
+    public static MessagesTxt getMessagesTxt() {
+    	
+    	return messagesTxt ;
+    }
+    
+    public static LogTask getLogTask() {
+    	
+    	return logTask ;
     }
     
     public static void logWarn(String text) {
@@ -142,10 +177,10 @@ public class BlockNotif extends JavaPlugin implements Listener {
 
     private TreeSetAll<BlockData> getBlockDataList(String strPath, BlockDataType blockDataType) {
 
-        TreeSetAll<BlockData> bd = new TreeSetAll<BlockData>();
-        List<String> str = this.getConfig().getStringList(strPath);
+        final TreeSetAll<BlockData> bd = new TreeSetAll<BlockData>();
+        final List<String> str = this.getConfig().getStringList(strPath);
 
-        for (String value : str) {
+        for (final String value : str) {
             if (value.equals("0") || value.equals("*")) {
                 bd.setIsAll(true);
             } else {
@@ -438,16 +473,16 @@ public class BlockNotif extends JavaPlugin implements Listener {
     public void onInventoryDragEvent(InventoryDragEvent event) {
 
         // Bypass bug exploitation, dispensers
-        int maxInv = checkMaxInv(event.getInventory().getType());
+        final int maxInv = checkMaxInv(event.getInventory().getType());
 
         if (maxInv != 0) {
 
-            for (int slot : event.getNewItems().keySet()) {
+            for (final int slot : event.getNewItems().keySet()) {
                 if (slot < maxInv) {
 
-                    Player player = (Player) event.getWhoClicked();
-                    Block bl = player.getTargetBlock(null, 10);
-                    ItemStack item = event.getNewItems().get(slot);
+                    final Player player = (Player) event.getWhoClicked();
+                    final Block bl = player.getTargetBlock(null, 10);
+                    final ItemStack item = event.getNewItems().get(slot);
                     if (itemCheck(player, bl.getLocation(), new BlockData(item.getType()))) {
                         event.setCancelled(true);
                         return;
@@ -461,7 +496,7 @@ public class BlockNotif extends JavaPlugin implements Listener {
     public void onInventoryClickEvent(InventoryClickEvent event) {
 
         // Bypass bug exploitation, dispensers
-        int maxInv = checkMaxInv(event.getInventory().getType());
+        final int maxInv = checkMaxInv(event.getInventory().getType());
 
         if (maxInv != 0
                 && ((event.getRawSlot() < maxInv && (event.getAction() == InventoryAction.PLACE_ALL
@@ -470,8 +505,8 @@ public class BlockNotif extends JavaPlugin implements Listener {
                 || event.getAction() == InventoryAction.SWAP_WITH_CURSOR))
                 || (event.getRawSlot() >= maxInv && event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY))) {
 
-            Player player = (Player) event.getWhoClicked();
-            Block bl = player.getTargetBlock(null, 10);
+            final Player player = (Player) event.getWhoClicked();
+            final Block bl = player.getTargetBlock(null, 10);
             ItemStack item;
 
             if (event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY) {

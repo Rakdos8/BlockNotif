@@ -106,7 +106,7 @@ public class MessagesTxt {
 
         // Take message text from file
         for (int t = 0; t < MESSAGE_NAME.length; t++) {
-            String messageFile = getCustomConfig().getString(MESSAGE_NAME[t]);
+            final String messageFile = getCustomConfig().getString(MESSAGE_NAME[t]);
             if (messageFile == null) {
                 listeMessage.add(MESSAGE_DEFAULT[t].replaceAll("&", "§"));
             } else {
@@ -126,10 +126,10 @@ public class MessagesTxt {
         customConfig = YamlConfiguration.loadConfiguration(customConfigFile);
 
         // Look for defaults in the jar
-        InputStream defConfigStream = blockNotif.getResource(LANGFILENAME);
+        final InputStream defConfigStream = blockNotif.getResource(LANGFILENAME);
         if (defConfigStream != null) {
-        	Reader reader = new InputStreamReader(defConfigStream, Charsets.UTF_8);
-        	YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(reader);
+        	final Reader reader = new InputStreamReader(defConfigStream, Charsets.UTF_8);
+        	final YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(reader);
             customConfig.setDefaults(defConfig);
         }
     }
@@ -144,7 +144,7 @@ public class MessagesTxt {
 
     private void saveDefaultConfig() throws Exception {
 
-        File LangTMP = new File(blockNotif.getDataFolder(), LANGTMP);
+        final File LangTMP = new File(blockNotif.getDataFolder(), LANGTMP);
 
         if (customConfigFile == null) {
             customConfigFile = new File(blockNotif.getDataFolder(), LANGFILENAME);

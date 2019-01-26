@@ -36,7 +36,7 @@ public class TntList extends LinkedList<TntEntry> {
 
     public void addAction(Calendar calendar, Player player, Location location) {
 
-        TntEntry tntEntry = new TntEntry(calendar, player, location);
+        final TntEntry tntEntry = new TntEntry(calendar, player, location);
         // Anti duplication
         if (this.isEmpty() || !tntEntry.equals(this.getLast())) {
             addLast(tntEntry);
