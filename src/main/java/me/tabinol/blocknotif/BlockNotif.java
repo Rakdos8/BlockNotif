@@ -195,7 +195,7 @@ public class BlockNotif extends JavaPlugin implements Listener {
 			} else {
 				try {
 					bd.add(new BlockData(blockDataType, value));
-				} catch (Exception ex) {
+				} catch (NullPointerException ex) {
 					this.getLogger().log(Level.WARNING, "In config.yml, {0}: {1} is invalid!",
 							new Object[]{strPath, value});
 					this.getLogger().log(Level.FINE, ex.getMessage(), ex);
@@ -320,18 +320,15 @@ public class BlockNotif extends JavaPlugin implements Listener {
 						MessagesTxt.IGNITE,
 						event.getPlayer().getTargetBlock(null, 10).getLocation(), bd);
 			}
-		}
 
+			if (event.getCause() == IgniteCause.FLINT_AND_STEEL
+					&& blockIgnitePreventList.contains(bd)
+					&& (debug || !Permission.playerHasPermission(event.getPlayer(),"blocknotif.allow.ignite." + event.getBlock().getType().name()))) {
 
+				event.setCancelled(true);
+				event.getPlayer().sendMessage(messagesTxt.getMessage(MessagesTxt.MESSAGE_NOPERMISSION, null, null));
+			}
 
-		//A user ignites a block
-		BlockData bd = new BlockData(event.getBlock());
-		if (event.getCause() == IgniteCause.FLINT_AND_STEEL
-				&& blockIgnitePreventList.contains(bd)
-				&& (debug || !Permission.playerHasPermission(event.getPlayer(),"blocknotif.allow.ignite." + event.getBlock().getType().name()))) {
-
-			event.setCancelled(true);
-			event.getPlayer().sendMessage(messagesTxt.getMessage(MessagesTxt.MESSAGE_NOPERMISSION, null, null));
 		}
 	}
 
@@ -402,7 +399,7 @@ public class BlockNotif extends JavaPlugin implements Listener {
 	public void onEntityDamageByEntity(final EntityDamageByEntityEvent event) {
 
 		Player damager = null;
-		Arrow damagerArrow;
+		final Arrow damagerArrow;
 
 		// A user kill an entity
 		if (event.getDamager() instanceof Player) {
@@ -473,7 +470,7 @@ public class BlockNotif extends JavaPlugin implements Listener {
 
 			final Player player = (Player) event.getWhoClicked();
 			final Block bl = player.getTargetBlock(null, 10);
-			ItemStack item;
+			final ItemStack item;
 
 			if (event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY) {
 				item = event.getCurrentItem();

@@ -57,7 +57,7 @@ public class MessagesTxt {
 		"MESSAGE_NOPERMISSION",
 	};
 	// type of Action
-	static final int DESTROY = 0;
+	public static final int DESTROY = 0;
 	static final int PLACE = 1;
 	static final int IGNITE = 2;
 	static final int USEBUCKET = 3;
@@ -180,7 +180,7 @@ public class MessagesTxt {
 	 * @param param params
 	 * @return Message
 	 */
-	public String getMessage(int messageNb, String[] paramName, String[] param) {
+	public String getMessage(final int messageNb, final String[] paramName, final String[] param) {
 
 		String resultTxt = listeMessage.get(messageNb);
 		int t;

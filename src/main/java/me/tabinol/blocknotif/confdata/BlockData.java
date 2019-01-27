@@ -56,8 +56,8 @@ public class BlockData implements Comparable<BlockData> {
 
 		this.blockDataType = blockDataType;
 		final String[] dataVal = dataInf.split(":");
-		Material mat;
-		EntityType ent;
+		final Material mat;
+		final EntityType ent;
 
 		if (blockDataType == BlockDataType.BLOCK && (mat = Material.matchMaterial(dataVal[0])) != null) {
 			this.material = mat ;
@@ -133,7 +133,7 @@ public class BlockData implements Comparable<BlockData> {
 
 	public String getDisplay() {
 
-		String colSrc;
+		final String colSrc;
 		final StringBuilder iName = new StringBuilder();
 
 		// Get color

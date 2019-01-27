@@ -42,8 +42,8 @@ public class NotifyActionTask extends BukkitRunnable {
 	 * @param calendar Calendar
 	 * @param playerActionBlock Player action block
 	 */
-	public NotifyActionTask(BlockActionList blockActionList, 
-			Calendar calendar, String playerActionBlock) {
+	public NotifyActionTask(final BlockActionList blockActionList,
+			final Calendar calendar, final String playerActionBlock) {
 		
 		super();
 		this.blockActionList = blockActionList;
@@ -80,10 +80,10 @@ public class NotifyActionTask extends BukkitRunnable {
 		}
 	}
 
-	private static void sendNotificationMessage(BlockEntry blockEntryLast, int nbOfValue) {
+	private static void sendNotificationMessage(final BlockEntry blockEntryLast, final int nbOfValue) {
 		
-		String message;
-		String finalMessage;
+		final String message ;
+		final String finalMessage;
 		
 		message = blockEntryLast.getMessage();
 		if(nbOfValue > 1) {

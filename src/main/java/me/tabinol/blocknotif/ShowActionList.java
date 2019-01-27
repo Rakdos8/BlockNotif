@@ -31,7 +31,7 @@ class ShowActionList {
 	private String playerName;
 	private int pageNumber;
 
-	ShowActionList(CommandSender sender, String playerName, int pageNumber) {
+	ShowActionList(final CommandSender sender, final String playerName, final int pageNumber) {
 
 		super();
 		this.sender = sender;
@@ -62,10 +62,10 @@ class ShowActionList {
 
 	// Help from : http://jd.bukkit.org/rb/doxygen/da/dfe/HelpCommand_8java_source.html
 	// Echo ActionList to requestor with pagination
-	private void sendListAction(String listAction, int pageNumber) {
+	private void sendListAction(final String listAction, final int pageNumber) {
 
-		int pageHeight;
-		int pageWidth;
+		final int pageHeight;
+		final int pageWidth;
 
 		if (sender instanceof ConsoleCommandSender) {
 			pageHeight = ChatPaginator.UNBOUNDED_PAGE_HEIGHT;

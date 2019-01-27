@@ -57,7 +57,7 @@ public class BlockActionList extends LinkedList<BlockEntry> {
 	public void addAction(final Calendar calendar, final Player player, final int action,
 			final Location location, final BlockData blockData) {
 
-		String playerName;
+		final String playerName;
 		
 		// Verify permissions and GameMode
 		if (action == MessagesTxt.TNTEXPLODE || (BlockNotif.getDebugState() || !Permission.playerHasPermission(player,"blocknotif.ignore")
