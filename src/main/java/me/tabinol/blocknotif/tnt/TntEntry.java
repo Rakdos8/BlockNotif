@@ -24,35 +24,35 @@ import org.bukkit.Location;
 
 public class TntEntry {
 
-    private Calendar calendar;
-    private Player player;
-    private Location location;
+	private Calendar calendar;
+	private Player player;
+	private Location location;
 
-    public TntEntry(Calendar calendar, Player player, Location location) {
+	public TntEntry(Calendar calendar, Player player, Location location) {
 
-        this.calendar = calendar;
-        this.player = player;
-        this.location = location;
-    }
+		this.calendar = calendar;
+		this.player = player;
+		this.location = location;
+	}
 
-    public boolean equals(TntEntry tntEntryB) {
+	public boolean equals(TntEntry tntEntryB) {
 
-        return player.getName().equals(tntEntryB.player.getName())
-                && location.equals(tntEntryB.location);
-    }
+		return player.getName().equals(tntEntryB.player.getName())
+				&& location.equals(tntEntryB.location);
+	}
 
-    public Location getLocation() {
+	public Location getLocation() {
 
-        return location;
-    }
+		return location;
+	}
 
-    public Calendar getCalendar() {
+	public Calendar getCalendar() {
 
-        return calendar;
-    }
+		return calendar;
+	}
 
-    public Player getPlayer() {
+	public Player getPlayer() {
 
-        return player;
-    }
+		return player;
+	}
 }

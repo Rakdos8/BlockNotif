@@ -22,42 +22,42 @@ import java.util.TreeSet;
 
 public class TreeSetAll<E> extends TreeSet<E> {
 
-    /**
+	/**
 	 * Serial Number
 	 */
 	private static final long serialVersionUID = -3235246768443291689L;
 	private boolean isAll = false;
-    
-    public TreeSetAll() {
-        
-        super();
-    }
+	
+	public TreeSetAll() {
+		
+		super();
+	}
 
-    @Override
-    public boolean contains(Object o) {
+	@Override
+	public boolean contains(Object o) {
 
-        if (isAll) {
-            return true;
-        }
-        return super.contains(o);
-    }
+		if (isAll) {
+			return true;
+		}
+		return super.contains(o);
+	}
 
-    @Override
-    public boolean containsAll(Collection<?> clctn) {
+	@Override
+	public boolean containsAll(Collection<?> clctn) {
 
-        if (isAll) {
-            return true;
-        }
-        return super.containsAll(clctn);
-    }
+		if (isAll) {
+			return true;
+		}
+		return super.containsAll(clctn);
+	}
 
-    public void setIsAll(boolean isAll) {
+	public void setIsAll(boolean isAll) {
 
-        this.isAll = isAll;
-    }
-    
-    public boolean getIsAll() {
-        
-        return isAll;
-    }
+		this.isAll = isAll;
+	}
+	
+	public boolean getIsAll() {
+		
+		return isAll;
+	}
 }

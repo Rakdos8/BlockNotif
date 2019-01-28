@@ -24,61 +24,61 @@ import org.bukkit.util.ChatPaginator;
 // Show action list has request from a player
 public class ShowActionList {
 
-    private BlockNotif blockNotif;
-    private CommandSender sender;
-    private String playerName;
-    private int pageNumber;
+	private BlockNotif blockNotif;
+	private CommandSender sender;
+	private String playerName;
+	private int pageNumber;
 
-    public ShowActionList(CommandSender sender, String playerName, int pageNumber) {
+	public ShowActionList(CommandSender sender, String playerName, int pageNumber) {
 
-        super();
-        blockNotif = BlockNotif.getThisPlugin();
-        this.sender = sender;
-        this.playerName = playerName;
-        this.pageNumber = pageNumber;
-    }
+		super();
+		blockNotif = BlockNotif.getThisPlugin();
+		this.sender = sender;
+		this.playerName = playerName;
+		this.pageNumber = pageNumber;
+	}
 
-    public void show() {
+	public void show() {
 
-        boolean hasAction = false;
-        int t;
-        StringBuilder listAction = new StringBuilder();
+		boolean hasAction = false;
+		int t;
+		StringBuilder listAction = new StringBuilder();
 
-        for (t = BlockNotif.blockActionList.size() - 1; t >= 0; t--) {
-            if (BlockNotif.blockActionList.get(t).getPlayerName().equalsIgnoreCase(playerName)) {
-                // sender.sendMessage(blockNotif.blockActionList.get(t).getMessage());
-                // Get messages into big String
-                listAction.append(BlockNotif.blockActionList.get(t).getMessage()).append('\n');
-                hasAction = true;
-            }
-        }
-        if (hasAction == true) {
-            sendListAction(listAction.toString(), pageNumber);
-        } else {
-            sender.sendMessage(blockNotif.messagesTxt.getMessage(MessagesTxt.MESSAGE_NOACTIVITY, null, null));
-        }
+		for (t = BlockNotif.blockActionList.size() - 1; t >= 0; t--) {
+			if (BlockNotif.blockActionList.get(t).getPlayerName().equalsIgnoreCase(playerName)) {
+				// sender.sendMessage(blockNotif.blockActionList.get(t).getMessage());
+				// Get messages into big String
+				listAction.append(BlockNotif.blockActionList.get(t).getMessage()).append('\n');
+				hasAction = true;
+			}
+		}
+		if (hasAction == true) {
+			sendListAction(listAction.toString(), pageNumber);
+		} else {
+			sender.sendMessage(blockNotif.messagesTxt.getMessage(MessagesTxt.MESSAGE_NOACTIVITY, null, null));
+		}
 
-    }
+	}
 
-    // Help from : http://jd.bukkit.org/rb/doxygen/da/dfe/HelpCommand_8java_source.html
-    // Echo ActionList to requestor with pagination
-    private void sendListAction(String listAction, int pageNumber) {
+	// Help from : http://jd.bukkit.org/rb/doxygen/da/dfe/HelpCommand_8java_source.html
+	// Echo ActionList to requestor with pagination
+	private void sendListAction(String listAction, int pageNumber) {
 
-        int pageHeight;
-        int pageWidth;
+		int pageHeight;
+		int pageWidth;
 
-        if (sender instanceof ConsoleCommandSender) {
-            pageHeight = ChatPaginator.UNBOUNDED_PAGE_HEIGHT;
-            pageWidth = ChatPaginator.UNBOUNDED_PAGE_WIDTH;
-        } else {
-            pageHeight = ChatPaginator.CLOSED_CHAT_PAGE_HEIGHT - 1;
-            pageWidth = ChatPaginator.AVERAGE_CHAT_PAGE_WIDTH;
-        }
+		if (sender instanceof ConsoleCommandSender) {
+			pageHeight = ChatPaginator.UNBOUNDED_PAGE_HEIGHT;
+			pageWidth = ChatPaginator.UNBOUNDED_PAGE_WIDTH;
+		} else {
+			pageHeight = ChatPaginator.CLOSED_CHAT_PAGE_HEIGHT - 1;
+			pageWidth = ChatPaginator.AVERAGE_CHAT_PAGE_WIDTH;
+		}
 
-        ChatPaginator.ChatPage page = ChatPaginator.paginate(listAction, pageNumber, pageWidth, pageHeight);
+		ChatPaginator.ChatPage page = ChatPaginator.paginate(listAction, pageNumber, pageWidth, pageHeight);
 
-        sender.sendMessage(page.getLines());
-        sender.sendMessage("---(" + page.getPageNumber() + "/" + page.getTotalPages() + ")---");
+		sender.sendMessage(page.getLines());
+		sender.sendMessage("---(" + page.getPageNumber() + "/" + page.getTotalPages() + ")---");
 
-    }
+	}
 }
