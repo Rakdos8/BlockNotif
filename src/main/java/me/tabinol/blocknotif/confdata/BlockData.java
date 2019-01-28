@@ -62,11 +62,11 @@ public class BlockData implements Comparable<BlockData> {
 		if (blockDataType == BlockDataType.BLOCK && (mat = Material.matchMaterial(dataVal[0])) != null) {
 			this.material = mat ;
 			this.name = this.material.name();
-		} else if (blockDataType == BlockDataType.ENTITY && (ent = EntityType.valueOf(dataVal[0])) != EntityType.UNKNOWN) {
+		} else if (blockDataType == BlockDataType.ENTITY && (ent = EntityType.fromName(dataVal[0])) != null) {
 			this.entity = ent ;
 			this.name = this.entity.name();
 		} else {
-			BlockNotif.logWarn(dataInf + " is not a recognized block or entity.");
+			BlockNotif.logWarn(dataInf + " is not a recognized " + blockDataType.name().toLowerCase() + ".");
 		}
 
 		if (dataVal.length >= 2
