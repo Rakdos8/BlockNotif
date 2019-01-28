@@ -23,24 +23,41 @@ package me.tabinol.blocknotif.utils;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.Writer;
 import java.util.Scanner;
+import java.util.logging.Level;
 
+import me.tabinol.blocknotif.BlockNotif;
+
+/**
+ * Copy a file
+ * @author Tabinol & Bhasher
+ */
 public class FileCopy {
 
-	public static void copyFile(File fileR, File fileW) throws Exception {
-
-		String newLine = System.getProperty("line.separator");
-		Writer output = new BufferedWriter(new FileWriter(fileW, true));
-		Scanner scanner;
-		scanner = new Scanner(fileR, "UTF-8");
-
-		while (scanner.hasNextLine()) {
-			output.write(scanner.nextLine());
-			output.write(newLine);
-		}
+	/**
+	 * Copy a file
+	 * @param fileR File reader
+	 * @param fileW File writer
+	 */
+	public static void copyFile(final File fileR, final File fileW){
 		
-		scanner.close();
-		output.close();
+		final String newLine = System.getProperty("line.separator");
+		
+		try(final Writer output = new BufferedWriter(new FileWriter(fileW, true))) {
+			
+			try(final Scanner scanner = new Scanner(fileR, "UTF-8")) {
+
+				while (scanner.hasNextLine()) {
+					output.write(scanner.nextLine());
+					output.write(newLine);
+				}
+			}catch (IOException ex) {
+				BlockNotif.getThisPlugin().getLogger().log(Level.SEVERE, ex.getMessage(), ex);
+			}
+		}catch (IOException ex) {
+			BlockNotif.getThisPlugin().getLogger().log(Level.SEVERE, ex.getMessage(), ex);
+		}
 	}
 }

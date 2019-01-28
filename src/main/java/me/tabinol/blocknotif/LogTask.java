@@ -22,24 +22,40 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
 
+/**
+ * Log task
+ * @author Tabinol
+ */
 public class LogTask {
 
 	private static final String LOGFILENAME = "BlockNotif.log";
 	private BlockNotif blockNotif;
 	private boolean logFileEnable = false;
 
+	/**
+	 * Initialise log task
+	 */
 	public LogTask() {
 
 		blockNotif = BlockNotif.getThisPlugin();
 	}
 
-	public void setLogEnable(boolean logFileEnable) {
+	/**
+	 * Enable log file
+	 * @param logFileEnable logFileEnable
+	 */
+	public void setLogEnable(final boolean logFileEnable) {
 
 		this.logFileEnable = logFileEnable;
 	}
 
-	public void writeLog(String textLog) {
+	/**
+	 * Log to write
+	 * @param textLog Text to log
+	 */
+	public void writeLog(final String textLog) {
 		blockNotif.getLogger().info(textLog);
 
 		if (logFileEnable) {
@@ -48,29 +64,31 @@ public class LogTask {
 	}
 
 	// Source : http://forums.bukkit.org/threads/making-a-log-file-for-your-plugins.85430/
-	public void logToFile(String message) {
 
-
-		try {
-			File dataFolder = blockNotif.getDataFolder();
-			if (!dataFolder.exists()) {
-				dataFolder.mkdir();
-			}
-
-			File saveTo = new File(blockNotif.getDataFolder(), LOGFILENAME);
-			if (!saveTo.exists()) {
+	/**
+	 * Log to file
+	 * @param message Message
+	 */
+	private void logToFile(final String message) {
+		
+		final File dataFolder = blockNotif.getDataFolder();
+		if (!dataFolder.exists()) {
+			dataFolder.mkdir();
+		}
+	
+		final File saveTo = new File(blockNotif.getDataFolder(), LOGFILENAME);
+		if (!saveTo.exists()) {
+			try {
 				saveTo.createNewFile();
+			} catch (final IOException e) {
+				BlockNotif.getThisPlugin().getLogger().log(Level.SEVERE, e.getMessage(), e) ;
 			}
-
-			FileWriter fw = new FileWriter(saveTo, true);
-			PrintWriter pw = new PrintWriter(fw);
+		}
+		
+		try(final PrintWriter pw = new PrintWriter(new FileWriter(saveTo, true))) {
 			pw.println(message);
-			pw.flush();
-			pw.close();
-
-		} catch (IOException e) {
-
-			e.printStackTrace();
+		} catch (final IOException e) {
+			BlockNotif.getThisPlugin().getLogger().log(Level.SEVERE, e.getMessage(), e) ;
 		}
 	}
 }

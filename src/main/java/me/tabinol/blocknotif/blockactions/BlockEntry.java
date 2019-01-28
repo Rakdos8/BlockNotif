@@ -23,56 +23,48 @@ import me.tabinol.blocknotif.BlockNotif;
 import me.tabinol.blocknotif.confdata.BlockData;
 import org.bukkit.Location;
 
+/**
+ * Blocks information
+ * @author Tabinol
+ */
 public class BlockEntry {
 
-	private final BlockNotif blockNotif;
 	private final Calendar calendar;
 	private final String playerName;
-	private final int action; // type of action
-	private final String cuboid;
+	private final int action;
 	private final Location location;
 	private final BlockData blockData;
 
-	public BlockEntry(Calendar calendar, String playerName, int action,
-			String cuboid, Location location, BlockData blockData) {
+	/**
+	 * Initialise BlockEntry
+	 * @param calendar Calendar
+	 * @param playerName Player name
+	 * @param action Action
+	 * @param location Location
+	 * @param blockData Block data
+	 */
+	public BlockEntry(final Calendar calendar, final String playerName, final int action, final Location location, final BlockData blockData) {
 
-		blockNotif = BlockNotif.getThisPlugin();
 		this.calendar = calendar;
 		this.playerName = playerName;
 		this.action = action;
-		this.cuboid = cuboid;
+
 		this.location = location;
 		this.blockData = blockData;
 	}
 
 	public String getMessage() {
 
-		String cuboidWorld;
-
-		if (cuboid != null && !cuboid.equals("")) {
-			cuboidWorld = cuboid + "/" + location.getWorld().getName();
-		} else {
-			cuboidWorld = location.getWorld().getName();
-		}
-
-		return blockNotif.messagesTxt.getMessage(action,
+		return BlockNotif.getMessagesTxt().getMessage(action,
 				new String[]{"<time>", "<player>", "<block>", "<world>", "<posx>", "<posy>", "<posz>"},
-				new String[]{getTime(), playerName, blockData.getDisplay(), cuboidWorld,
+				new String[]{getTime(), playerName, blockData.getDisplay(), location.getWorld().getName(),
 			Integer.toString(location.getBlockX()), Integer.toString(location.getBlockY()), Integer.toString(location.getBlockZ())});
 	}
 
-	public String getTime() {
+	private String getTime() {
 
 		return String.format("%02d:%02d:%02d", calendar.get(Calendar.HOUR_OF_DAY),
 				calendar.get(Calendar.MINUTE), calendar.get(Calendar.SECOND));
-	}
-
-	public boolean equals(BlockEntry blockEntryB) {
-
-		return playerName.equals(blockEntryB.playerName)
-				&& this.action == blockEntryB.action
-				&& location.equals(blockEntryB.location)
-				&& this.blockData.equals(blockEntryB.blockData);
 	}
 
 	public Calendar getCalendar() {
@@ -85,6 +77,10 @@ public class BlockEntry {
 		return playerName;
 	}
 
+	/**
+	 * Format for action list
+	 * @return Formatted string
+	 */
 	public String toActionInList() {
 
 		return playerName + ":" + action + ":" + blockData;

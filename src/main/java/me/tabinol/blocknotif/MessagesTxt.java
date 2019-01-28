@@ -19,57 +19,65 @@
 package me.tabinol.blocknotif;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import me.tabinol.blocknotif.utils.FileCopy;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import com.google.common.base.Charsets;
+
+/**
+ * Text message
+ * @author Tabinol
+ */
 public class MessagesTxt {
 
-	public final static String LANGFILENAME = "language.yml";
-	public final static String LANGTMP = "languagetmp.yml";
-	public final static String MESSAGE_NAME[] = {
-		// Must be the same position of type of action (below)
-		"MESSAGE_DESTROY", // DESTROY = 0
-		"MESSAGE_PLACE", // PLACE = 1
-		"MESSAGE_IGNITE", // IGNITE = 2
-		"MESSAGE_USEBUCKET", // USEBUCKET = 3
-		"MESSAGE_TNTEXPLODE", // TNTEXPLODE = 4
-		"MESSAGE_XRAY", // XRAY = 5, Removed at version 1.5.1
-		"MESSAGE_ENTITYKILL", // ENTITYKILL = 6
-		// Next, are in MessageTxt
+	private static final String LANGFILENAME = "language.yml";
+	private static final String LANGTMP = "languagetmp.yml";
+	private static final String MESSAGE_NAME[] = {
+		"MESSAGE_DESTROY",
+		"MESSAGE_PLACE",
+		"MESSAGE_IGNITE",
+		"MESSAGE_USEBUCKET",
+		"MESSAGE_TNTEXPLODE",
+		"MESSAGE_XRAY",
+		"MESSAGE_ENTITYKILL",
 		"MESSAGE_BEFORE",
 		"MESSAGE_RELOAD",
 		"MESSAGE_SPECIFYPLAYER",
 		"MESSAGE_NOACTIVITY",
-		"MESSAGE_NOPERMISSION"
+		"MESSAGE_NOPERMISSION",
 	};
 	// type of Action
-	public final static int DESTROY = 0;
-	public final static int PLACE = 1;
-	public final static int IGNITE = 2;
-	public final static int USEBUCKET = 3;
-	public final static int TNTEXPLODE = 4;
-	public final static int XRAY = 5; // Removed at version 1.5.1
-	public final static int ENTITYKILL = 6;
-	public final static int MESSAGE_BEFORE = 7;
-	public final static int MESSAGE_RELOAD = 8;
-	public final static int MESSAGE_SPECIFYPLAYER = 9;
-	public final static int MESSAGE_NOACTIVITY = 10;
-	public final static int MESSAGE_NOPERMISSION = 11;
+	public static final int DESTROY = 0;
+	public static final int PLACE = 1;
+	public static final int IGNITE = 2;
+	public static final int USEBUCKET = 3;
+	public static final int TNTEXPLODE = 4;
+	public static final int XRAY = 5;
+	public static final int ENTITYKILL = 6;
+	public static final int MESSAGE_BEFORE = 7;
+	public static final int MESSAGE_RELOAD = 8;
+	public static final int MESSAGE_SPECIFYPLAYER = 9;
+	public static final int MESSAGE_NOACTIVITY = 10;
+	public static final int MESSAGE_NOPERMISSION = 11;
 	// Default messages must be also in laguage.yml in comment (#)
 	// Here again the same position of type of action
-	public final static String MESSAGE_DEFAULT[] = {
+	private static final String MESSAGE_DEFAULT[] = {
 		"&f<time>: &5<player> &9destroyed &5<block> &9in &5<world>&9,&5<posx>&9,&5<posy>&9,&5<posz>",
 		"&f<time>: &5<player> &9placed &5<block> &9in &5<world>&9,&5<posx>&9,&5<posy>&9,&5<posz>",
 		"&f<time>: &5<player> &9ignited &5<block> &9in &5<world>&9,&5<posx>&9,&5<posy>&9,&5<posz>",
 		"&f<time>: &5<player> &9used &5<block> &9in &5<world>&9,&5<posx>&9,&5<posy>&9,&5<posz>",
 		"&f<time>: &5BOOM! &9created by &5<player> &9in &5<world>&9,&5<posx>&9,&5<posy>&9,&5<posz>",
-		"&f<time>: &5<player> &9uses potentially &5X-Ray&9!", // Removed at version 1.5.1
+		"&f<time>: &5<player> &9uses potentially &5X-Ray&9!",
 		"&f<time>: &5<player> &9killed &5<block> &9in &5<world>&9,&5<posx>&9,&5<posy>&9,&5<posz>",
 		"&9 (and &5<nb> &9before)",
 		"Configuration reloaded!",
@@ -82,6 +90,9 @@ public class MessagesTxt {
 	private File customConfigFile = null;
 	private BlockNotif blockNotif;
 
+	/**
+	 * Log a message
+	 */
 	public MessagesTxt() {
 
 		blockNotif = BlockNotif.getThisPlugin();
@@ -94,15 +105,18 @@ public class MessagesTxt {
 		}
 	}
 
+	/**
+	 * Load messages
+	 */
 	public void loadMessages() {
 
 		reloadCustomConfig();
 
-		listeMessage = new ArrayList<String>();
+		listeMessage = new ArrayList<>();
 
 		// Take message text from file
 		for (int t = 0; t < MESSAGE_NAME.length; t++) {
-			String messageFile = getCustomConfig().getString(MESSAGE_NAME[t]);
+			final String messageFile = getCustomConfig().getString(MESSAGE_NAME[t]);
 			if (messageFile == null) {
 				listeMessage.add(MESSAGE_DEFAULT[t].replaceAll("&", "§"));
 			} else {
@@ -114,7 +128,7 @@ public class MessagesTxt {
 	}
 
 	// Source : http://wiki.bukkit.org/Introduction_to_the_New_Configuration#Methods_for_Getting.2C_Reloading.2C_and_Saving_Custom_Configurations
-	public void reloadCustomConfig() {
+	private void reloadCustomConfig() {
 
 		if (customConfigFile == null) {
 			customConfigFile = new File(blockNotif.getDataFolder(), LANGFILENAME);
@@ -122,14 +136,19 @@ public class MessagesTxt {
 		customConfig = YamlConfiguration.loadConfiguration(customConfigFile);
 
 		// Look for defaults in the jar
-		InputStream defConfigStream = blockNotif.getResource(LANGFILENAME);
+		final InputStream defConfigStream = blockNotif.getResource(LANGFILENAME);
 		if (defConfigStream != null) {
-			YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
-			customConfig.setDefaults(defConfig);
+			try(final Reader reader = new InputStreamReader(defConfigStream, Charsets.UTF_8)){
+
+				final YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(reader);
+				customConfig.setDefaults(defConfig);
+			}catch (IOException ex){
+				BlockNotif.getThisPlugin().getLogger().log(Level.SEVERE, ex.getMessage(), ex);
+			}
 		}
 	}
 
-	public FileConfiguration getCustomConfig() {
+	private FileConfiguration getCustomConfig() {
 
 		if (customConfig == null) {
 			this.reloadCustomConfig();
@@ -137,9 +156,9 @@ public class MessagesTxt {
 		return customConfig;
 	}
 
-	private void saveDefaultConfig() throws Exception {
+	private void saveDefaultConfig() {
 
-		File LangTMP = new File(blockNotif.getDataFolder(), LANGTMP);
+		final File langTMP = new File(blockNotif.getDataFolder(), LANGTMP);
 
 		if (customConfigFile == null) {
 			customConfigFile = new File(blockNotif.getDataFolder(), LANGFILENAME);
@@ -148,13 +167,20 @@ public class MessagesTxt {
 		// Copy a temporary file and convert for Windows UTF-8 bug
 		if (!customConfigFile.exists()) {
 			blockNotif.saveResource(LANGTMP, false);
-			FileCopy.copyFile(LangTMP, customConfigFile);
-			LangTMP.delete();
+			FileCopy.copyFile(langTMP, customConfigFile);
+			langTMP.delete();
 		}
 	}
 	// End of citation
 
-	public String getMessage(int messageNb, String[] paramName, String[] param) {
+	/**
+	 * Get a message
+	 * @param messageNb Message number
+	 * @param paramName Name
+	 * @param param params
+	 * @return Message
+	 */
+	public String getMessage(final int messageNb, final String[] paramName, final String[] param) {
 
 		String resultTxt = listeMessage.get(messageNb);
 		int t;

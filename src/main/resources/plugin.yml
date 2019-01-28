@@ -1,6 +1,7 @@
 name: BlockNotif
 main: me.tabinol.blocknotif.BlockNotif
 version: ${project.version}
+api-version: 1.13
 softdepend: [Secuboid]
 commands:
     blocknotif:

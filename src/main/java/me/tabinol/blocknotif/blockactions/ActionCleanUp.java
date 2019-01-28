@@ -22,12 +22,18 @@ import java.util.Calendar;
 import me.tabinol.blocknotif.BlockNotif;
 import org.bukkit.scheduler.BukkitRunnable;
 
-// Clean Up Action in memory
+/**
+ * Clean Up Action in memory
+ * @author Tabinol
+ */
 public class ActionCleanUp extends BukkitRunnable {
 
 	private Calendar timeBefore;
 	private BlockNotif blockNotif;
-	
+
+	/**
+	 * Initialise memory
+	 */
 	public ActionCleanUp() { 
 		
 		super();
@@ -37,34 +43,38 @@ public class ActionCleanUp extends BukkitRunnable {
 	
 	@Override
 	public void run() {
-		int t = 0, u = 0;
+		int t = 0 ;
+		int u = 0 ;
 		
 		// Clean up Block Action List
-		while(!BlockNotif.blockActionList.isEmpty() && 
-				(BlockNotif.blockActionList.getFirst().getCalendar().before(timeBefore) ||
-						BlockNotif.blockActionList.size() >= blockNotif.getConfig().getInt("History.MaxEntryKeep"))) {
-			BlockNotif.blockActionList.removeFirst();
+		while(!BlockNotif.getBlockActionList().isEmpty() &&
+				(BlockNotif.getBlockActionList().getFirst().getCalendar().before(timeBefore) ||
+						BlockNotif.getBlockActionList().size() >= blockNotif.getConfig().getInt("History.MaxEntryKeep"))) {
+			BlockNotif.getBlockActionList().removeFirst();
 			t ++;
 		}
 		
 		// Clean up TNT list
-		while(!blockNotif.tntList.isEmpty() && (blockNotif.tntList.getFirst().getCalendar().before(timeBefore) ||
-				blockNotif.tntList.size() >= blockNotif.getConfig().getInt("History.MaxEntryKeep"))) {
-			blockNotif.tntList.removeFirst();
+		while(!BlockNotif.getTntList().isEmpty() && (BlockNotif.getTntList().getFirst().getCalendar().before(timeBefore) ||
+				BlockNotif.getTntList().size() >= blockNotif.getConfig().getInt("History.MaxEntryKeep"))) {
+			BlockNotif.getTntList().removeFirst();
 			u ++;
 		}
 		
 		// Notify cleanup in the console
-		blockNotif.logTask.writeLog("Clean up: " + t + " action(s), " + u + " TNT(s)");
+		BlockNotif.getLogTask().writeLog("Clean up: " + t + " action(s), " + u + " TNT(s)");
 		
 		// Reschedule Action
 		new ActionCleanUp().scheduleAction();
 		
 	}
 
+	/**
+	 * Schedule
+	 */
 	public void scheduleAction() {
 
 		runTaskLater(blockNotif,
-				20 * blockNotif.getConfig().getInt("History.MaxTimeKeep"));
+				20 * blockNotif.getConfig().getLong("History.MaxTimeKeep"));
 	}
 }
