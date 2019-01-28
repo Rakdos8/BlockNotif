@@ -58,17 +58,17 @@ public class MessagesTxt {
 	};
 	// type of Action
 	public static final int DESTROY = 0;
-	static final int PLACE = 1;
-	static final int IGNITE = 2;
-	static final int USEBUCKET = 3;
+	public static final int PLACE = 1;
+	public static final int IGNITE = 2;
+	public static final int USEBUCKET = 3;
 	public static final int TNTEXPLODE = 4;
-	static final int XRAY = 5;
-	static final int ENTITYKILL = 6;
-	static final int MESSAGE_BEFORE = 7;
-	static final int MESSAGE_RELOAD = 8;
-	static final int MESSAGE_SPECIFYPLAYER = 9;
-	static final int MESSAGE_NOACTIVITY = 10;
-	static final int MESSAGE_NOPERMISSION = 11;
+	public static final int XRAY = 5;
+	public static final int ENTITYKILL = 6;
+	public static final int MESSAGE_BEFORE = 7;
+	public static final int MESSAGE_RELOAD = 8;
+	public static final int MESSAGE_SPECIFYPLAYER = 9;
+	public static final int MESSAGE_NOACTIVITY = 10;
+	public static final int MESSAGE_NOPERMISSION = 11;
 	// Default messages must be also in laguage.yml in comment (#)
 	// Here again the same position of type of action
 	private static final String MESSAGE_DEFAULT[] = {
@@ -93,7 +93,7 @@ public class MessagesTxt {
 	/**
 	 * Log a message
 	 */
-	MessagesTxt() {
+	public MessagesTxt() {
 
 		blockNotif = BlockNotif.getThisPlugin();
 
@@ -108,7 +108,7 @@ public class MessagesTxt {
 	/**
 	 * Load messages
 	 */
-	void loadMessages() {
+	public void loadMessages() {
 
 		reloadCustomConfig();
 

@@ -67,6 +67,7 @@ public class BlockNotif extends JavaPlugin implements Listener {
 	private static List<String> inActionList;
 	private static MessagesTxt messagesTxt;
 	private static LogTask logTask;
+
 	private TreeSetAll<BlockData> blockBreakList;
 	private TreeSetAll<BlockData> blockPlaceList;
 	private TreeSetAll<BlockData> blockIgniteList;

@@ -25,7 +25,7 @@ import org.bukkit.util.ChatPaginator;
  * Show action list has request from a player
  * @author Tabinol
  */
-class ShowActionList {
+public class ShowActionList {
 
 	private CommandSender sender;
 	private String playerName;
@@ -39,7 +39,7 @@ class ShowActionList {
 		this.pageNumber = pageNumber;
 	}
 
-	void show() {
+	public void show() {
 
 		boolean hasAction = false;
 		int t;

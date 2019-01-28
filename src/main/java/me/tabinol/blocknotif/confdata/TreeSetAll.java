@@ -36,6 +36,7 @@ public class TreeSetAll<E> extends TreeSet<E> {
 	/**
 	 * Initialise TreeSetAll
 	 */
+
 	public TreeSetAll() {
 		
 		super();

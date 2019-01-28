@@ -37,7 +37,7 @@ public class LogTask {
 	/**
 	 * Initialise log task
 	 */
-	LogTask() {
+	public LogTask() {
 
 		blockNotif = BlockNotif.getThisPlugin();
 	}
@@ -46,7 +46,7 @@ public class LogTask {
 	 * Enable log file
 	 * @param logFileEnable logFileEnable
 	 */
-	void setLogEnable(final boolean logFileEnable) {
+	public void setLogEnable(final boolean logFileEnable) {
 
 		this.logFileEnable = logFileEnable;
 	}

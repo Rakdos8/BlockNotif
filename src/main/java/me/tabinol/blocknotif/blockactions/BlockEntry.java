@@ -48,6 +48,7 @@ public class BlockEntry {
 		this.calendar = calendar;
 		this.playerName = playerName;
 		this.action = action;
+
 		this.location = location;
 		this.blockData = blockData;
 	}
