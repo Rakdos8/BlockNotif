@@ -28,19 +28,19 @@ import java.util.Scanner;
 
 public class FileCopy {
 
-    public static void copyFile(File fileR, File fileW) throws Exception {
+	public static void copyFile(File fileR, File fileW) throws Exception {
 
-        String newLine = System.getProperty("line.separator");
-        Writer output = new BufferedWriter(new FileWriter(fileW, true));
-        Scanner scanner;
-        scanner = new Scanner(fileR, "UTF-8");
+		String newLine = System.getProperty("line.separator");
+		Writer output = new BufferedWriter(new FileWriter(fileW, true));
+		Scanner scanner;
+		scanner = new Scanner(fileR, "UTF-8");
 
-        while (scanner.hasNextLine()) {
-            output.write(scanner.nextLine());
-            output.write(newLine);
-        }
-        
-        scanner.close();
-        output.close();
-    }
+		while (scanner.hasNextLine()) {
+			output.write(scanner.nextLine());
+			output.write(newLine);
+		}
+		
+		scanner.close();
+		output.close();
+	}
 }

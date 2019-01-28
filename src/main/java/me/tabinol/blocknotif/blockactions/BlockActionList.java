@@ -30,58 +30,35 @@ import org.bukkit.entity.Player;
 
 public class BlockActionList extends LinkedList<BlockEntry> {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = -2474988612847951992L;
-    private final BlockNotif blockNotif;
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -2474988612847951992L;
+	private final BlockNotif blockNotif;
 
-    public BlockActionList() {
+	public BlockActionList() {
 
-        super();
-        blockNotif = BlockNotif.getThisPlugin();
-    }
+		super();
+		blockNotif = BlockNotif.getThisPlugin();
+	}
 
-    // Add Action (common)
-    public void addAction(Calendar calendar, Player player, int action,
-            Location location, BlockData blockData) {
+	// Add Action (common)
+	public void addAction(Calendar calendar, Player player, int action,
+			Location location, BlockData blockData) {
 
-        String playerName;
-        String cuboid;
-        
-        // Verify permissions and GameMode
-        if (action == MessagesTxt.TNTEXPLODE || (!player.hasPermission("blocknotif.ignore")
-                && ((player.getGameMode() == GameMode.CREATIVE
-                && BlockNotif.ActionListen_Creative
-                || !(player.getGameMode() == GameMode.CREATIVE))))) {
-            if (player == null) {
-                playerName = "UNKNOWN";
-            } else {
-                playerName = player.getName();
-            }
-
-            // Detect cuboid
-            if (blockNotif.landAccess != null) {
-                cuboid = blockNotif.landAccess.getLandName(location);
-            } else {
-                cuboid = null;
-            }
-
-            // Add entry and Notify
-            BlockEntry blockEntry = new BlockEntry(calendar, playerName,
-                    action, cuboid, location, blockData);
-            // Anti duplication
-            if (this.isEmpty() || !blockEntry.equals(this.getLast())) {
-                addLast(blockEntry);
-                blockNotif.logTask.writeLog(blockEntry.getMessage().replaceAll("§.", ""));
-                // Check if Entry exist, if not, add it
-                String actionInList = blockEntry.toActionInList();
-                if (!blockNotif.inActionList.contains(actionInList)) {
-                    new NotifyActionTask(this, calendar, actionInList).runTaskLater(blockNotif,
-                            20 * BlockNotif.History_TimeBeforeNotify);
-
-                }
-            }
-        }
-    }
+		String playerName;
+		String cuboid;
+		
+		// Verify permissions and GameMode
+		if (action == MessagesTxt.TNTEXPLODE || (!player.hasPermission("blocknotif.ignore")
+				&& ((player.getGameMode() == GameMode.CREATIVE
+				&& BlockNotif.ActionListen_Creative
+				|| !(player.getGameMode() == GameMode.CREATIVE))))) {
+			if (player == null) {
+				playerName = "UNKNOWN";
+			} else {
+				playerName = player.getName();
+			}
+		}
+	}
 }

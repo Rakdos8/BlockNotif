@@ -26,45 +26,45 @@ import org.bukkit.entity.Player;
 
 public class TntList extends LinkedList<TntEntry> {
 
-    private static final long serialVersionUID = 4025050512327193640L;
-    BlockNotif blockNotif;
+	private static final long serialVersionUID = 4025050512327193640L;
+	BlockNotif blockNotif;
 
-    public TntList() {
+	public TntList() {
 
-        this.blockNotif = BlockNotif.getThisPlugin();
-    }
+		this.blockNotif = BlockNotif.getThisPlugin();
+	}
 
-    public void addAction(Calendar calendar, Player player, Location location) {
+	public void addAction(Calendar calendar, Player player, Location location) {
 
-        TntEntry tntEntry = new TntEntry(calendar, player, location);
-        // Anti duplication
-        if (this.isEmpty() || !tntEntry.equals(this.getLast())) {
-            addLast(tntEntry);
-        }
-    }
+		TntEntry tntEntry = new TntEntry(calendar, player, location);
+		// Anti duplication
+		if (this.isEmpty() || !tntEntry.equals(this.getLast())) {
+			addLast(tntEntry);
+		}
+	}
 
-    public Player getPlayer(Location location) {
+	public Player getPlayer(Location location) {
 
-        Player player = null;
-        int t = 0;
-        boolean foundIt = false;
+		Player player = null;
+		int t = 0;
+		boolean foundIt = false;
 
-        while (!isEmpty() && t != size() && !foundIt) {
-            if (compareTnt((int) location.getX(), get(t).getLocation().getBlockX(), 15)
-                    && compareTnt((int) location.getY(), get(t).getLocation().getBlockY(), 50)
-                    && compareTnt((int) location.getZ(), get(t).getLocation().getBlockZ(), 15)) {
-                foundIt = true;
-                player = get(t).getPlayer();
+		while (!isEmpty() && t != size() && !foundIt) {
+			if (compareTnt((int) location.getX(), get(t).getLocation().getBlockX(), 15)
+					&& compareTnt((int) location.getY(), get(t).getLocation().getBlockY(), 50)
+					&& compareTnt((int) location.getZ(), get(t).getLocation().getBlockZ(), 15)) {
+				foundIt = true;
+				player = get(t).getPlayer();
 
-            }
-            t++;
-        }
+			}
+			t++;
+		}
 
-        return player;
-    }
+		return player;
+	}
 
-    public static boolean compareTnt(int a, int b, int distance) {
+	public static boolean compareTnt(int a, int b, int distance) {
 
-        return a >= b - distance && a <= b + distance;
-    }
+		return a >= b - distance && a <= b + distance;
+	}
 }

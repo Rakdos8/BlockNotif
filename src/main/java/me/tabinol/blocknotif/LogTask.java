@@ -25,52 +25,52 @@ import java.io.PrintWriter;
 
 public class LogTask {
 
-    private static final String LOGFILENAME = "BlockNotif.log";
-    private BlockNotif blockNotif;
-    private boolean logFileEnable = false;
+	private static final String LOGFILENAME = "BlockNotif.log";
+	private BlockNotif blockNotif;
+	private boolean logFileEnable = false;
 
-    public LogTask() {
+	public LogTask() {
 
-        blockNotif = BlockNotif.getThisPlugin();
-    }
+		blockNotif = BlockNotif.getThisPlugin();
+	}
 
-    public void setLogEnable(boolean logFileEnable) {
+	public void setLogEnable(boolean logFileEnable) {
 
-        this.logFileEnable = logFileEnable;
-    }
+		this.logFileEnable = logFileEnable;
+	}
 
-    public void writeLog(String textLog) {
-        blockNotif.getLogger().info(textLog);
+	public void writeLog(String textLog) {
+		blockNotif.getLogger().info(textLog);
 
-        if (logFileEnable) {
-            logToFile(textLog);
-        }
-    }
+		if (logFileEnable) {
+			logToFile(textLog);
+		}
+	}
 
-    // Source : http://forums.bukkit.org/threads/making-a-log-file-for-your-plugins.85430/
-    public void logToFile(String message) {
+	// Source : http://forums.bukkit.org/threads/making-a-log-file-for-your-plugins.85430/
+	public void logToFile(String message) {
 
 
-        try {
-            File dataFolder = blockNotif.getDataFolder();
-            if (!dataFolder.exists()) {
-                dataFolder.mkdir();
-            }
+		try {
+			File dataFolder = blockNotif.getDataFolder();
+			if (!dataFolder.exists()) {
+				dataFolder.mkdir();
+			}
 
-            File saveTo = new File(blockNotif.getDataFolder(), LOGFILENAME);
-            if (!saveTo.exists()) {
-                saveTo.createNewFile();
-            }
+			File saveTo = new File(blockNotif.getDataFolder(), LOGFILENAME);
+			if (!saveTo.exists()) {
+				saveTo.createNewFile();
+			}
 
-            FileWriter fw = new FileWriter(saveTo, true);
-            PrintWriter pw = new PrintWriter(fw);
-            pw.println(message);
-            pw.flush();
-            pw.close();
+			FileWriter fw = new FileWriter(saveTo, true);
+			PrintWriter pw = new PrintWriter(fw);
+			pw.println(message);
+			pw.flush();
+			pw.close();
 
-        } catch (IOException e) {
+		} catch (IOException e) {
 
-            e.printStackTrace();
-        }
-    }
+			e.printStackTrace();
+		}
+	}
 }
