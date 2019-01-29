@@ -153,7 +153,7 @@ public class BlockNotif extends JavaPlugin implements Listener {
 	 * @param text Text to display
 	 */
 	public static void logWarn(final String text) {
-		Bukkit.getLogger().warning(() -> "[BlockNotif] {}" + text);
+		Bukkit.getLogger().log(Level.WARNING ,"[BlockNotif] {0}", text);
 	}
 
 	/**
@@ -162,7 +162,7 @@ public class BlockNotif extends JavaPlugin implements Listener {
 	 */
 
 	public static void logInfo(final String text) {
-		Bukkit.getLogger().info(() -> "[BlockNotif] " + text);
+		Bukkit.getLogger().log(Level.INFO ,"[BlockNotif] {0}", text);
 	}
 
 	private void loadBlockNotifConfig() {
@@ -191,7 +191,11 @@ public class BlockNotif extends JavaPlugin implements Listener {
 		final List<String> str = this.getConfig().getStringList(strPath);
 
 		for (final String value : str) {
+
 			if ("0".equals(value) || "*".equals(value)) {
+				if("0".equals(value)){
+					logWarn("0 is deprecated. Please use '*'.");
+				}
 				bd.setIsAll(true);
 			} else {
 				try {
