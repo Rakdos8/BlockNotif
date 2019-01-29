@@ -4,7 +4,7 @@
 LogFile: false
 
 # Disables bypass permissions
-Debug: true
+Debug: false
 
 # List here for which block you want to be notified
 # You can use ['*'] for ALL blocks (Recommended only for BlockIgnite)
