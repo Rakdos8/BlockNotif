@@ -106,7 +106,7 @@ public class BlockNotif extends JavaPlugin implements Listener {
 		messagesTxt = new MessagesTxt();
 		blockNotif.loadBlockNotifConfig();
 		new ActionCleanUp().scheduleAction();
-		debug = blockNotif.getConfig().getBoolean("Debug") ;
+		debug = blockNotif.getConfig().getBoolean("Debug", false) ;
 		if(debug){
 			logInfo("Debug mod enabled. This mod disables bypass permissions.");
 		}
@@ -198,12 +198,9 @@ public class BlockNotif extends JavaPlugin implements Listener {
 				}
 				bd.setIsAll(true);
 			} else {
-				try {
-					bd.add(new BlockData(blockDataType, value));
-				} catch (NullPointerException ex) {
-					this.getLogger().log(Level.WARNING, "In config.yml, {0}: {1} is invalid!",
-							new Object[]{strPath, value});
-					this.getLogger().log(Level.FINE, ex.getMessage(), ex);
+				final BlockData lbd = new BlockData(blockDataType, value) ;
+				if(lbd.getName() != null){
+					bd.add(lbd);
 				}
 			}
 		}

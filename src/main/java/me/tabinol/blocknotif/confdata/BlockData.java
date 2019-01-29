@@ -18,6 +18,7 @@
 package me.tabinol.blocknotif.confdata;
 
 import me.tabinol.blocknotif.BlockNotif;
+import me.tabinol.blocknotif.utils.EnumUtils;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -59,10 +60,10 @@ public class BlockData implements Comparable<BlockData> {
 		final Material mat;
 		final EntityType ent;
 
-		if (blockDataType == BlockDataType.BLOCK && (mat = Material.matchMaterial(dataVal[0])) != null) {
+		if (blockDataType == BlockDataType.BLOCK && (mat = EnumUtils.getEnumFromName(Material.class, dataVal[0])) != null) {
 			this.material = mat ;
 			this.name = this.material.name();
-		} else if (blockDataType == BlockDataType.ENTITY && (ent = EntityType.fromName(dataVal[0])) != null) {
+		} else if (blockDataType == BlockDataType.ENTITY && (ent = EnumUtils.getEnumFromName(EntityType.class, dataVal[0], EntityType.UNKNOWN)) != null) {
 			this.entity = ent ;
 			this.name = this.entity.name();
 		} else {
