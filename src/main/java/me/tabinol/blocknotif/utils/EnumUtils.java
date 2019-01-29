@@ -10,7 +10,7 @@ import me.tabinol.blocknotif.BlockNotif;
  */
 public final class EnumUtils {
 
-	final static private Logger logger = BlockNotif.getThisPlugin().getLogger();
+	private static final Logger logger = BlockNotif.getThisPlugin().getLogger();
 
 	private EnumUtils() {
 		// Nothing to do
