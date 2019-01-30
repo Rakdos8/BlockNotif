@@ -30,8 +30,6 @@ public final class Permission {
 
 		final String[] permissionParts = permission.split("\\.");
 
-		BlockNotif.logInfo(permission + ", " + permissionParts.length);
-
 		if(permissionParts.length == 0){
 			return false ;
 		}
