@@ -21,18 +21,19 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.util.ChatPaginator;
 
-// Show action list has request from a player
+/**
+ * Show action list has request from a player
+ * @author Tabinol
+ */
 public class ShowActionList {
 
-	private BlockNotif blockNotif;
 	private CommandSender sender;
 	private String playerName;
 	private int pageNumber;
 
-	public ShowActionList(CommandSender sender, String playerName, int pageNumber) {
+	ShowActionList(final CommandSender sender, final String playerName, final int pageNumber) {
 
 		super();
-		blockNotif = BlockNotif.getThisPlugin();
 		this.sender = sender;
 		this.playerName = playerName;
 		this.pageNumber = pageNumber;
@@ -42,30 +43,29 @@ public class ShowActionList {
 
 		boolean hasAction = false;
 		int t;
-		StringBuilder listAction = new StringBuilder();
+		final StringBuilder listAction = new StringBuilder();
 
-		for (t = BlockNotif.blockActionList.size() - 1; t >= 0; t--) {
-			if (BlockNotif.blockActionList.get(t).getPlayerName().equalsIgnoreCase(playerName)) {
-				// sender.sendMessage(blockNotif.blockActionList.get(t).getMessage());
+		for (t = BlockNotif.getBlockActionList().size() - 1; t >= 0; t--) {
+			if (BlockNotif.getBlockActionList().get(t).getPlayerName().equalsIgnoreCase(playerName)) {
 				// Get messages into big String
-				listAction.append(BlockNotif.blockActionList.get(t).getMessage()).append('\n');
+				listAction.append(BlockNotif.getBlockActionList().get(t).getMessage()).append('\n');
 				hasAction = true;
 			}
 		}
-		if (hasAction == true) {
+		if (hasAction) {
 			sendListAction(listAction.toString(), pageNumber);
 		} else {
-			sender.sendMessage(blockNotif.messagesTxt.getMessage(MessagesTxt.MESSAGE_NOACTIVITY, null, null));
+			sender.sendMessage(BlockNotif.getMessagesTxt().getMessage(MessagesTxt.MESSAGE_NOACTIVITY, null, null));
 		}
 
 	}
 
 	// Help from : http://jd.bukkit.org/rb/doxygen/da/dfe/HelpCommand_8java_source.html
 	// Echo ActionList to requestor with pagination
-	private void sendListAction(String listAction, int pageNumber) {
+	private void sendListAction(final String listAction, final int pageNumber) {
 
-		int pageHeight;
-		int pageWidth;
+		final int pageHeight;
+		final int pageWidth;
 
 		if (sender instanceof ConsoleCommandSender) {
 			pageHeight = ChatPaginator.UNBOUNDED_PAGE_HEIGHT;
@@ -75,7 +75,7 @@ public class ShowActionList {
 			pageWidth = ChatPaginator.AVERAGE_CHAT_PAGE_WIDTH;
 		}
 
-		ChatPaginator.ChatPage page = ChatPaginator.paginate(listAction, pageNumber, pageWidth, pageHeight);
+		final ChatPaginator.ChatPage page = ChatPaginator.paginate(listAction, pageNumber, pageWidth, pageHeight);
 
 		sender.sendMessage(page.getLines());
 		sender.sendMessage("---(" + page.getPageNumber() + "/" + page.getTotalPages() + ")---");

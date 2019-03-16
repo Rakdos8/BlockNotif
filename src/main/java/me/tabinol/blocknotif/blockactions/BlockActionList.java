@@ -24,41 +24,69 @@ import me.tabinol.blocknotif.BlockNotif;
 import me.tabinol.blocknotif.MessagesTxt;
 import me.tabinol.blocknotif.NotifyActionTask;
 import me.tabinol.blocknotif.confdata.BlockData;
-import org.bukkit.GameMode;
+import me.tabinol.blocknotif.utils.Permission;
+
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.GameMode ;
 
+/**
+ * List actions
+ * @author Tabinol
+ */
 public class BlockActionList extends LinkedList<BlockEntry> {
 
-	/**
-	 *
-	 */
 	private static final long serialVersionUID = -2474988612847951992L;
-	private final BlockNotif blockNotif;
 
+	/**
+	 *  Initialise list of actions
+	 */
 	public BlockActionList() {
 
 		super();
-		blockNotif = BlockNotif.getThisPlugin();
 	}
 
-	// Add Action (common)
-	public void addAction(Calendar calendar, Player player, int action,
-			Location location, BlockData blockData) {
+	/**
+	 * Add Action (common)
+	 * @param calendar Calendar
+	 * @param player Player
+	 * @param action Action
+	 * @param location Location
+	 * @param blockData BlockData
+	 */
+	public void addAction(final Calendar calendar, final Player player, final int action,
+			final Location location, final BlockData blockData) {
 
-		String playerName;
-		String cuboid;
+		final String playerName;
 		
 		// Verify permissions and GameMode
-		if (action == MessagesTxt.TNTEXPLODE || (!player.hasPermission("blocknotif.ignore")
-				&& ((player.getGameMode() == GameMode.CREATIVE
-				&& BlockNotif.ActionListen_Creative
-				|| !(player.getGameMode() == GameMode.CREATIVE))))) {
+		if (action == MessagesTxt.TNTEXPLODE || (BlockNotif.getDebugState() || !Permission.playerHasPermission(player,"blocknotif.ignore")
+				&& (player.getGameMode() == GameMode.CREATIVE
+				&& BlockNotif.getThisPlugin().getConfig().getBoolean("ActionListen.Creative")
+				|| player.getGameMode() != GameMode.CREATIVE))) {
 			if (player == null) {
 				playerName = "UNKNOWN";
 			} else {
 				playerName = player.getName();
 			}
+
+			// Add entry and Notify
+			final BlockEntry blockEntry = new BlockEntry(calendar, playerName,
+					action, location, blockData);
+			// Anti duplication
+			if (this.isEmpty() || !blockEntry.equals(this.getLast())) {
+				addLast(blockEntry);
+				BlockNotif.getLogTask().writeLog(blockEntry.getMessage().replaceAll("§.", ""));
+				// Check if Entry exist, if not, add it
+				final String actionInList = blockEntry.toActionInList();
+				if (!BlockNotif.getInActionList().contains(actionInList)) {
+					new NotifyActionTask(this, calendar, actionInList).runTaskLater(BlockNotif.getThisPlugin(),
+							20 * BlockNotif.getThisPlugin().getConfig().getLong("History.TimeBeforeNotify"));
+
+				}
+			}
+
 		}
+
 	}
 }

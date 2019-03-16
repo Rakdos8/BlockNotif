@@ -19,29 +19,63 @@
 package me.tabinol.blocknotif.tnt;
 
 import java.util.Calendar;
+
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.bukkit.entity.Player;
 import org.bukkit.Location;
 
-public class TntEntry {
+/**
+ * TntEntry
+ * @author Tabinol
+ */
+public final class TntEntry {
 
 	private Calendar calendar;
 	private Player player;
 	private Location location;
 
-	public TntEntry(Calendar calendar, Player player, Location location) {
+	/**
+	 * Initialise TntEntry
+	 * @param calendar Calendar
+	 * @param player Player
+	 * @param location Location
+	 */
+	TntEntry(final Calendar calendar, final Player player, final Location location) {
 
 		this.calendar = calendar;
 		this.player = player;
 		this.location = location;
 	}
 
-	public boolean equals(TntEntry tntEntryB) {
-
-		return player.getName().equals(tntEntryB.player.getName())
-				&& location.equals(tntEntryB.location);
+	@Override
+	public final int hashCode(){
+		return new HashCodeBuilder()
+				.append(player)
+				.append(location)
+				.hashCode();
 	}
 
-	public Location getLocation() {
+	/**
+	 * Check if two TntEntry are similar
+	 * @param object TntEntry object
+	 * @return same TntEntry
+	 */
+	@Override
+	public final boolean equals(final Object object) {
+
+		if(object instanceof TntEntry){
+
+			final TntEntry tntEntryB = (TntEntry) object ;
+
+			return player.getName().equals(tntEntryB.player.getName())
+					&& location.equals(tntEntryB.location);
+		}
+
+		return false ;
+
+	}
+
+	Location getLocation() {
 
 		return location;
 	}

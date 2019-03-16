@@ -4,7 +4,7 @@
 
     <groupId>me.tabinol.blocknotif</groupId>
     <artifactId>BlockNotif</artifactId>
-    <version>1.7.1-SNAPSHOT</version>
+    <version>1.8.4-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>BlockNotif</name>
@@ -27,8 +27,8 @@
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
-            <version>1.8.8-R0.1-SNAPSHOT</version>
-            <optional>true</optional>
+            <version>1.13.2-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
 		
         <dependency>

@@ -21,34 +21,43 @@ package me.tabinol.blocknotif;
 import me.tabinol.blocknotif.blockactions.BlockActionList;
 import me.tabinol.blocknotif.blockactions.BlockEntry;
 import java.util.Calendar;
+
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-// Notify action task after the delay
+/**
+ * Notify action task after the delay
+ * @author Tabinol
+ */
 public class NotifyActionTask extends BukkitRunnable {
 	
-	private BlockNotif blockNotif;
 	private BlockActionList blockActionList;
 	private String playerActionBlock;
 	private Calendar calendar;
-	
-	public NotifyActionTask(BlockActionList blockActionList, 
-			Calendar calendar, String playerActionBlock) {
+
+	/**
+	 * Initialise Notify action task
+	 * @param blockActionList Block action list
+	 * @param calendar Calendar
+	 * @param playerActionBlock Player action block
+	 */
+	public NotifyActionTask(final BlockActionList blockActionList,
+			final Calendar calendar, final String playerActionBlock) {
 		
 		super();
-		blockNotif = BlockNotif.getThisPlugin();
 		this.blockActionList = blockActionList;
 		this.calendar = calendar;
 		this.playerActionBlock = playerActionBlock;
 		
-		blockNotif.inActionList.add(playerActionBlock);
+		BlockNotif.getInActionList().add(playerActionBlock);
 	}
 
 	@Override
 	public void run() {
 		
 		int cmp = blockActionList.size();
-		blockNotif.inActionList.remove(playerActionBlock);
+		BlockNotif.getInActionList().remove(playerActionBlock);
 		BlockEntry blockEntry;
 		int nbOfValue = 0;
 		BlockEntry blockEntryLast = null;
@@ -66,24 +75,26 @@ public class NotifyActionTask extends BukkitRunnable {
 			
 		} while(blockEntry.getCalendar().after(calendar) && cmp != 0);
 		
-		sendNotificationMessage(blockNotif, blockEntryLast, nbOfValue);
+		if(blockEntryLast != null){
+			sendNotificationMessage(blockEntryLast, nbOfValue);
+		}
 	}
+
+	private static void sendNotificationMessage(final BlockEntry blockEntryLast, final int nbOfValue) {
 		
-	public static void sendNotificationMessage(BlockNotif blockNotif, BlockEntry blockEntryLast, int nbOfValue) {
-		
-		String message;
-		String finalMessage;
+		final String message ;
+		final String finalMessage;
 		
 		message = blockEntryLast.getMessage();
 		if(nbOfValue > 1) {
-			finalMessage = message + blockNotif.messagesTxt.getMessage(MessagesTxt.MESSAGE_BEFORE, 
+			finalMessage = message + BlockNotif.getMessagesTxt().getMessage(MessagesTxt.MESSAGE_BEFORE, 
 					new String[] { "<nb>" },
 					new String[] { Integer.toString(nbOfValue - 1) } ); 
 		} else {
 			finalMessage = message;
 		}
 		
-		for(Player players: blockNotif.getServer().getOnlinePlayers()) {
+		for(final Player players:  Bukkit.getOnlinePlayers()) {
 			if(players.hasPermission("blocknotif.notify") || players.isOp()) {
 				players.sendMessage(finalMessage);
 			}
